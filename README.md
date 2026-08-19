@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/sentinel-banner.jpeg" alt="Sentinel Hook" width="100%"></p>
+
 # Sentinel — adverse-selection-aware dynamic fees for Uniswap v4
 
 > **Static fees charge the same. LP risk does not.**
