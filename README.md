@@ -49,6 +49,13 @@ These are exactly the gaps the funded research closes:
   not trained values.
 - No manipulation-suite testing beyond the invariant fuzz — that is Gate 3.
 
+## Live deployment
+
+**Unichain Sepolia:** [`0xcbd5bac7b96770d7f18b97d05d6518a4d0913080`](https://sepolia.uniscan.xyz/address/0xcbd5bac7b96770d7f18b97d05d6518a4d0913080)
+(deploy tx [`0xc3e8…97f4`](https://sepolia.uniscan.xyz/tx/0xc3e802403376d05c648a28e97ded81a706696045c025a7b2232a5542a80797f4)) —
+CREATE2-mined so the address encodes the hook's permission bits
+(`beforeInitialize | afterInitialize | beforeSwap` = `0x3080`).
+
 ## Build and test
 
 Built from [Uniswap v4-template](https://github.com/Uniswap/v4-template).

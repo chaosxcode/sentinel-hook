@@ -187,7 +187,7 @@ h2{break-after:avoid}
 <h2>13. Who is building this</h2>
 <p><strong>A solo, self-taught builder-operator</strong> &mdash; and this application is deliberately structured so the Foundation funds <em>verifiable output, not credentials</em>. Two pieces of that output are already public:</p>
 <div class="grid2">
-<div class="card"><strong>SentinelHookV0 &mdash; working prototype, live now</strong><p class="muted">A functioning v4 dynamic-fee hook skeleton built on the official v4 template: <code>beforeSwap</code> fee override with hard bounds, rate limiting, hysteresis + cooldown, pre-swap-only observations and safe fallbacks. 14 passing Foundry tests including fuzz invariants (fee never left bounds across 6,400 randomized swaps); measured ~13.9k gas overhead vs a no-hook pool against the Gate 3 target of &le;40k. Deliberately contains no trained model and no performance claims. <a href="https://github.com/chaosxcode/sentinel-hook">github.com/chaosxcode/sentinel-hook</a></p></div>
+<div class="card"><strong>SentinelHookV0 &mdash; working prototype, live now</strong><p class="muted">A functioning v4 dynamic-fee hook skeleton built on the official v4 template: <code>beforeSwap</code> fee override with hard bounds, rate limiting, hysteresis + cooldown, pre-swap-only observations and safe fallbacks. 14 passing Foundry tests including fuzz invariants (fee never left bounds across 6,400 randomized swaps); measured ~13.9k gas overhead vs a no-hook pool against the Gate 3 target of &le;40k. Deliberately contains no trained model and no performance claims. <strong>Already deployed to Unichain Sepolia</strong> at <a href="https://sepolia.uniscan.xyz/address/0xcbd5bac7b96770d7f18b97d05d6518a4d0913080"><code>0xcbd5&hellip;3080</code></a>. <a href="https://github.com/chaosxcode/sentinel-hook">github.com/chaosxcode/sentinel-hook</a></p></div>
 <div class="card"><strong>HookGuard &mdash; prior Uniswap-ecosystem work</strong><p class="muted">A transparent risk scanner for Uniswap v4 hooks: analyzed all 486 registered hooks (only 6% had a published audit) and counted every pool ever created on Unichain &mdash; 1,211 deployed hooks vs 15 on the official list. Open source with a public site. <a href="https://github.com/chaosxcode/hookguard">github.com/chaosxcode/hookguard</a> &bull; <a href="https://chaosxcode.github.io/hookguard/">live site</a></p></div>
 </div>
 <div class="grid2">
@@ -215,6 +215,7 @@ h2{break-after:avoid}
 <tr><td>Ethereum</td><td><span class="anchor">0x000000000004444c5dc75cB358380D2e3dE08A90</span></td><td><code>21688329</code></td></tr>
 <tr><td>Unichain</td><td><span class="anchor">0x1F98400000000000000000000000000000000004</span></td><td><code>25500</code></td></tr>
 <tr><td>Unichain Sepolia</td><td colspan="2">Official testnet PoolManager &mdash; test deployment target</td></tr>
+<tr><td>SentinelHookV0 (deployed)</td><td><span class="anchor">0xcbd5bac7b96770d7f18b97d05d6518a4d0913080</span></td><td>Unichain Sepolia</td></tr>
 </table>
 <p class="muted">Anchors from the official <code>Uniswap/v4-subgraph</code> network configuration. Events decoded: <code>Initialize</code>, <code>Swap</code>, <code>ModifyLiquidity</code>. Subgraph queried via The Graph&rsquo;s GraphQL API with attribute-based pagination.</p>
 </section>
