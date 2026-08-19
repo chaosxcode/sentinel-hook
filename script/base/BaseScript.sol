@@ -22,9 +22,9 @@ contract BaseScript is Script, Deployers {
     /////////////////////////////////////
     // --- Configure These ---
     /////////////////////////////////////
-    IERC20 internal constant token0 = IERC20(0x0165878A594ca255338adfa4d48449f69242Eb8F);
-    IERC20 internal constant token1 = IERC20(0xa513E6E4b8f2a923D98304ec87F64353C4D5C853);
-    IHooks constant hookContract = IHooks(address(0));
+    IERC20 internal constant token0 = IERC20(0x345A187ace5808B0F7030d82cB2b444AcDa8Af1C); // Sentinel Test Alpha (Unichain Sepolia)
+    IERC20 internal constant token1 = IERC20(0x52611F5C1e35E3213E5155483311A2C9Ab310138); // Sentinel Test Beta (Unichain Sepolia)
+    IHooks constant hookContract = IHooks(0xCbD5bAc7B96770d7f18b97D05d6518A4D0913080); // SentinelHookV0 (Unichain Sepolia)
     /////////////////////////////////////
 
     Currency immutable currency0;

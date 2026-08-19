@@ -58,6 +58,34 @@ These are exactly the gaps the funded research closes:
 CREATE2-mined so the address encodes the hook's permission bits
 (`beforeInitialize | afterInitialize | beforeSwap` = `0x3080`).
 
+## Live demo — watch the fee logic fire on-chain
+
+A demo dynamic-fee pool runs on Unichain Sepolia against the deployed hook
+(test tokens [STA](https://sepolia.uniscan.xyz/address/0x345A187ace5808B0F7030d82cB2b444AcDa8Af1C) /
+[STB](https://sepolia.uniscan.xyz/address/0x52611F5C1e35E3213E5155483311A2C9Ab310138),
+pool created in [`0x2ec0db…`](https://sepolia.uniscan.xyz/tx/0x2ec0db2ba103573f8bea036706e3436020165abdaa2cdd61667684dd8e6fab78)).
+The choreography in [`script/04_DemoSwaps.s.sol`](script/04_DemoSwaps.s.sol):
+
+1. A calm swap pays the 0.05% base fee.
+2. A [large swap](https://sepolia.uniscan.xyz/tx/0x50e87fd492f70b5ca0f0f4e6a31b5d7ff6d24b1b074b26f99f46c8be735f383a)
+   moves the pool **−355 ticks** — and still pays the base fee, because the
+   fee is decided from pre-swap state: **a trade cannot price itself**.
+3. The next five swaps see that movement and ramp the fee — one rate-limited
+   step per update, every step a public `FeeUpdated` event:
+
+| Event | Fee change | Tick move seen | Transaction |
+|---|---|---|---|
+| 1 | 500 → 1000 | −355 | [`0x6e8f4b…`](https://sepolia.uniscan.xyz/tx/0x6e8f4bbb178d02ecf7c64a966331c6c7dea67c1f0b746a89ddef4a31b7b0b941) |
+| 2 | 1000 → 1500 | +4 | [`0xb7880c…`](https://sepolia.uniscan.xyz/tx/0xb7880c35fadc957005de5a7d9be22cfe3a25d1231cb47f74a41fd269a3b1e384) |
+| 3 | 1500 → 2000 | −3 | [`0xe021b8…`](https://sepolia.uniscan.xyz/tx/0xe021b81c15c729491ee70086ed849ff727a7cd2d314be5e5b158a9b8104caed7) |
+| 4 | 2000 → 2500 | +3 | [`0x2ba01e…`](https://sepolia.uniscan.xyz/tx/0x2ba01e0953e5440e2d771b3acee7b27e1da9abbe7eb0b53c9588309d33ff4d38) |
+| 5 | 2500 → 3000 | −3 | [`0xdc971a…`](https://sepolia.uniscan.xyz/tx/0xdc971a337241ccf2767f6dd0bf546790cec866879ed972b9fb46d78c0cc8a788) |
+
+The pool ends at the 0.30% elevated tier (asserted on-chain by the script),
+held there by hysteresis until the cooldown lets it ease back to base. Note
+events 2–5: tick moves of ±3–4 keep the *target* elevated while the fee
+climbs — rate limiting and hysteresis behaving exactly as the tests promise.
+
 ## Build and test
 
 Built from [Uniswap v4-template](https://github.com/Uniswap/v4-template).
