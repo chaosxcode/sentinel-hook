@@ -82,6 +82,7 @@ quiet hours decay it back toward base. Demo script:
 |---|---|
 | Gate 1 preregistration (frozen) | [research/GATE1_PREREG.md](research/GATE1_PREREG.md) |
 | Gate 1 report (fail on C3, pass on C1/C2) | [research/FINDINGS.md](research/FINDINGS.md) |
+| **Sentinel v2 preregistration (holdout protocol)** | [research/V2_PREREG.md](research/V2_PREREG.md) |
 | Measurement plan (seeded, committed pre-ingestion) | [evidence/gate1/measurement-plan-2025.json](evidence/gate1/measurement-plan-2025.json) |
 | 123 window manifests (hash-pinned) | [evidence/gate1/windows-2025/](evidence/gate1/windows-2025/) |
 | Calibration: continuous policy sweep | [evidence/gate1/backtest-continuous-fee.json](evidence/gate1/backtest-continuous-fee.json) |

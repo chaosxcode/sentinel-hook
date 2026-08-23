@@ -57,8 +57,10 @@ fee bounds and rate-limit invariants. **Measured swap-path overhead:
 
 All v2 evidence comes from calendar-2025 development data that informed the
 design. The locked holdout (Jan–Jul 2026) has not been ingested or evaluated
-and will be used exactly once, under a new pre-registration with window-level
-bars, before any performance claim is made.
+and will be used exactly once, under
+[`V2_PREREG.md`](V2_PREREG.md) — frozen 2026-08-23 with the policy parameters,
+pass bars (P1 significance, P2 robustness, P3 burden bound), and the
+one-shot commitment — before any performance claim is made.
 
 ## 2026-08-23 — Gate 1 validation result: FAIL on criterion 3
 
