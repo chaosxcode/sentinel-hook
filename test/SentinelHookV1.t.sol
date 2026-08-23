@@ -185,18 +185,46 @@ contract SentinelHookV1Test is BaseTest {
         }
     }
 
-    function test_GasOverheadPerSwap() public {
-        _swap(true, 1e15); // warm-up
-        vm.warp(block.timestamp + 2);
-        uint256 gasBefore = gasleft();
-        _swap(false, 1e14);
-        uint256 gasUsed = gasBefore - gasleft();
-        // Informational bound: keep the swap-path overhead in sight (Gate 3
-        // budget is <= 40k vs a no-hook pool).
-        emit assert_gas("swap gas", gasUsed);
-        assertLt(gasUsed, 400_000);
-    }
+    function test_GasOverheadVsNoHookPool() public {
+        // Identical pool with no hook, as the baseline (mirrors the V0 test).
+        PoolKey memory plainKey = PoolKey(currency0, currency1, 3000, 60, IHooks(address(0)));
+        poolManager.initialize(plainKey, Constants.SQRT_PRICE_1_1);
+        int24 tickLower = TickMath.minUsableTick(plainKey.tickSpacing);
+        int24 tickUpper = TickMath.maxUsableTick(plainKey.tickSpacing);
+        (uint256 a0, uint256 a1) = LiquidityAmounts.getAmountsForLiquidity(
+            Constants.SQRT_PRICE_1_1,
+            TickMath.getSqrtPriceAtTick(tickLower),
+            TickMath.getSqrtPriceAtTick(tickUpper),
+            100e18
+        );
+        positionManager.mint(
+            plainKey, tickLower, tickUpper, 100e18, a0 + 1, a1 + 1, address(this), block.timestamp, Constants.ZERO_BYTES
+        );
 
-    event assert_gas(string, uint256);
+        // Warm both pools once so storage-access costs are comparable.
+        _swap(true, 0.01e18);
+        swapRouter.swapExactTokensForTokens(
+            0.01e18, 0, true, plainKey, Constants.ZERO_BYTES, address(this), block.timestamp + 1
+        );
+
+        uint256 g0 = gasleft();
+        _swap(true, 0.01e18);
+        uint256 hooked = g0 - gasleft();
+
+        g0 = gasleft();
+        swapRouter.swapExactTokensForTokens(
+            0.01e18, 0, true, plainKey, Constants.ZERO_BYTES, address(this), block.timestamp + 1
+        );
+        uint256 plain = g0 - gasleft();
+
+        emit log_named_uint("hooked swap gas", hooked);
+        emit log_named_uint("no-hook swap gas", plain);
+        emit log_named_uint("hook overhead", hooked - plain);
+
+        // The grant's Gate 3 target is <= 40k gas overhead. V1 adds the
+        // sample-ring write plus EMA math on top of V0's path; keep the
+        // calm-swap overhead inside the budget.
+        assertLt(hooked - plain, 40_000);
+    }
 }
 

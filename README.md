@@ -6,151 +6,93 @@
 
 > **Static fees charge the same. LP risk does not.**
 
-Sentinel tests whether Uniswap v4 can price adverse-selection risk better:
+Sentinel builds dynamic fees for Uniswap v4 that price adverse-selection risk:
 low fees in normal conditions, higher LP compensation when market conditions
-become dangerous. The full research plan, pre-registered gates and budget are
-in the **[grant application](https://chaosxcode.github.io/sentinel-hook/)**.
+become dangerous. Every claim in this repo traces to committed, hash-receipted
+evidence.
 
-> **Latest research update — 2026-08-23:** Gate 1 has been measured and the
-> result is published under the pre-registered commitment: **criteria 1–2
-> passed decisively (adverse selection hit LPs on 126 of 126 active pool-days;
-> top-decile windows carry ~80% of losses), criterion 3 failed (trade-level
-> predictability ρ ≈ 0.02 « 0.15) — so the live-hook thesis is terminated.**
-> Read the **[Gate 1 report](research/FINDINGS.md)** and the
-> **[preregistration](research/GATE1_PREREG.md)**.
+> **Status (2026-08-23):** Gate 1 was measured against its pre-registered bars
+> and **failed criterion 3** (trade-level predictability) — published in full,
+> as committed. The post-mortem found where the signal actually lives
+> (**window-level loss persistence, ρ = 0.61**), and Sentinel **v2** was rebuilt
+> around it: a deployable self-contained signal, calibrated fee policy that
+> **beat static fees in 18/18 out-of-sample configurations**, and a working
+> contract (`SentinelHookV1`) at **~14k gas overhead**. Final proof is reserved
+> for the untouched holdout.
+>
+> Read the **[Gate 1 report](research/FINDINGS.md)** ·
+> **[preregistration](research/GATE1_PREREG.md)** ·
+> **[v2 calibration](evidence/gate1/calibration-vol-fee.json)**.
 
-## What this repo is (and deliberately is not)
+## The research arc, in four steps
 
-This is the **V0 skeleton** referenced in the grant application. It
-intentionally contains **no trained risk model and no performance claims** —
-the grant funds producing that evidence, whatever the answer turns out to be.
+1. **Measure the problem** — 123 sampled days of Unichain mainnet, ~4M raw v4
+   events, 2,536,933 labeled trades. Adverse selection hit LPs on **126 of 126
+   active pool-days**; the worst decile of 5-minute windows carried **~80% of
+   all losses**. The pain is real, relentless, and concentrated.
+2. **Pre-register, then publish the failure** — the v1 signal could not predict
+   individual toxic trades (ρ ≈ 0.02 vs the 0.15 bar). The failure was
+   published exactly as committed, with methodology, seeds, and exclusions.
+3. **Diagnose and rebuild** — toxic flow *clusters in time*: trailing losses
+   predict next-window losses at ρ = 0.61 (per-dollar: 0.30). A continuous,
+   calibrated fee policy replayed over 2.53M trades **beat static fees in 18 of
+   18 swept configurations** out-of-sample.
+4. **Make it deployable** — external reference prices are impossible on-chain,
+   so v2 uses a self-contained signal: EMA of realized 60-second pool-price
+   moves. Validated at ρ = 0.36 against reference-priced losses, calibrated
+   (+$2.98M net LP vs static on sampled days, 71% precision), and shipped as
+   [`SentinelHookV1`](src/SentinelHookV1.sol).
 
-What V0 *does* prove is the safety scaffolding the five-signal model will run
-inside, working end to end on the real v4 stack:
+## SentinelHookV1 — the live contract design
 
-| Safety property | Where | Verified by |
+| Property | Where | Verified by |
 |---|---|---|
-| Hard fee bounds (floor 0.01%, ceiling 1.00%) | `SentinelHookV0.sol` | fuzz: fee never leaves bounds across 6,400 randomized swaps |
-| Rate-limited fee changes (≤ 0.05% per update) | `_stepToward` | fuzz + unit tests |
-| Hysteresis + cooldown (no threshold bouncing) | `_beforeSwap` | `test_CooldownAndHysteresisEaseBack` |
-| Pre-swap observations only — a trade cannot set its own fee | `_beforeSwap` | `test_BigMoveElevatesFee_RateLimited` |
-| Safe base-fee fallback on unknown state | `_beforeSwap` | `test_UnknownPoolFallsBackToBaseFee` |
-| Stale-signal recalibration | `_beforeSwap` | `test_StaleStateRecalibratesTowardBase` |
-| Dynamic-fee pools only | `_beforeInitialize` | `test_RevertsOnStaticFeePool` |
-| Fixed-size O(1) state, no external calls in swap path | whole contract | code review |
+| Self-contained signal (no oracle) | EMA of realized 60s pool-price moves | `test_SmallSwapsAcrossTimeProduceSignal` |
+| Calibrated continuous fee: `clamp(4 × EMA, 5bps, 100bps)` | `_beforeSwap` | `test_VolatilityRampsFee_RateLimited_AndCapped` |
+| Hard fee bounds (floor 0.01%, cap 1.00%) | fee clamp | 257-run fuzz: `test_Fuzz_FeeStaysWithinBoundsAndRateLimited` |
+| Rate-limited changes (≤ 0.05%/update) | `_stepToward` | same fuzz |
+| A trade never sets its own fee | pre-swap observation | `test_SwapCannotSetItsOwnFee` |
+| Safe base-fee fallback on unknown state | `_beforeSwap` | V0 test suite (shared harness) |
+| Fee decays to base when volatility subsides | time-decay EMA | `test_FeeDecaysBackTowardBaseAfterQuiet` |
+| **~14k gas overhead per swap** (budget: ≤ 40k) | packed 10s-bucket sample ring | `test_GasOverheadVsNoHookPool` |
 
-**Measured V0 gas overhead: ~13.9k per swap** vs an identical no-hook pool
-(`test_GasOverheadVsNoHookPool`) — well inside the grant's Gate 3 target of
-≤ 40k.
+## What V0 remains
 
-The V0 placeholder rule is a single tick-movement signal with two fee tiers.
-It is deliberately dumb. The funded work replaces it with the five-signal
-model (volatility, size pressure, deviation, imbalance, acceleration),
-benchmarked in HookLab against static and volatility-based baselines on
-historical data, with pre-registered pass/fail gates.
+[`SentinelHookV0`](src/SentinelHookV0.sol) is the original safety skeleton
+(single tick-movement signal, two tiers) kept as the baseline: its deployment
+on Unichain Sepolia, the live fee-ramp demo, and its test suite document the
+scaffolding every future version inherits.
 
-## Known V0 limitations (by design)
-
-These are exactly the gaps the funded research closes:
-
-- The movement signal compares consecutive swaps only — slow sustained moves
-  and quiet-period gaps are not modeled (an attacker can wait out
-  `STALE_AFTER`). The full model uses notional-weighted EWMA windows.
-- No size-pressure, deviation, imbalance or acceleration signals yet.
-- Parameters (`ENTER_TICKS`, tier fees, cooldown) are unvalidated placeholders,
-  not trained values.
-- No manipulation-suite testing beyond the invariant fuzz — that is Gate 3.
-
-## Live deployment
+## Live deployment (V0 demo)
 
 **Unichain Sepolia:** [`0xcbd5bac7b96770d7f18b97d05d6518a4d0913080`](https://sepolia.uniscan.xyz/address/0xcbd5bac7b96770d7f18b97d05d6518a4d0913080)
-(deploy tx [`0xc3e8…97f4`](https://sepolia.uniscan.xyz/tx/0xc3e802403376d05c648a28e97ded81a706696045c025a7b2232a5542a80797f4)) —
-CREATE2-mined so the address encodes the hook's permission bits
-(`beforeInitialize | afterInitialize | beforeSwap` = `0x3080`).
+— CREATE2-mined so the address encodes the hook's permission bits. A V1
+deployment follows the same scripts (`script/00_DeployHook.s.sol`).
 
-## Live demo — watch the fee logic fire on-chain
+## Evidence index
 
-A demo dynamic-fee pool runs on Unichain Sepolia against the deployed hook
-(test tokens [STA](https://sepolia.uniscan.xyz/address/0x345A187ace5808B0F7030d82cB2b444AcDa8Af1C) /
-[STB](https://sepolia.uniscan.xyz/address/0x52611F5C1e35E3213E5155483311A2C9Ab310138),
-pool created in [`0x2ec0db…`](https://sepolia.uniscan.xyz/tx/0x2ec0db2ba103573f8bea036706e3436020165abdaa2cdd61667684dd8e6fab78)).
-The choreography in [`script/04_DemoSwaps.s.sol`](script/04_DemoSwaps.s.sol):
-
-1. A calm swap pays the 0.05% base fee.
-2. A [large swap](https://sepolia.uniscan.xyz/tx/0x50e87fd492f70b5ca0f0f4e6a31b5d7ff6d24b1b074b26f99f46c8be735f383a)
-   moves the pool **−355 ticks** — and still pays the base fee, because the
-   fee is decided from pre-swap state: **a trade cannot price itself**.
-3. The next five swaps see that movement and ramp the fee — one rate-limited
-   step per update, every step a public `FeeUpdated` event:
-
-| Event | Fee change | Tick move seen | Transaction |
-|---|---|---|---|
-| 1 | 500 → 1000 | −355 | [`0x6e8f4b…`](https://sepolia.uniscan.xyz/tx/0x6e8f4bbb178d02ecf7c64a966331c6c7dea67c1f0b746a89ddef4a31b7b0b941) |
-| 2 | 1000 → 1500 | +4 | [`0xb7880c…`](https://sepolia.uniscan.xyz/tx/0xb7880c35fadc957005de5a7d9be22cfe3a25d1231cb47f74a41fd269a3b1e384) |
-| 3 | 1500 → 2000 | −3 | [`0xe021b8…`](https://sepolia.uniscan.xyz/tx/0xe021b81c15c729491ee70086ed849ff727a7cd2d314be5e5b158a9b8104caed7) |
-| 4 | 2000 → 2500 | +3 | [`0x2ba01e…`](https://sepolia.uniscan.xyz/tx/0x2ba01e0953e5440e2d771b3acee7b27e1da9abbe7eb0b53c9588309d33ff4d38) |
-| 5 | 2500 → 3000 | −3 | [`0xdc971a…`](https://sepolia.uniscan.xyz/tx/0xdc971a337241ccf2767f6dd0bf546790cec866879ed972b9fb46d78c0cc8a788) |
-
-The pool ends at the 0.30% elevated tier (asserted on-chain by the script),
-held there by hysteresis until the cooldown lets it ease back to base. Note
-events 2–5: tick moves of ±3–4 keep the *target* elevated while the fee
-climbs — rate limiting and hysteresis behaving exactly as the tests promise.
-
-## Research pipeline — data ingestion and the frozen Gate 1 design
-
-The grant-plan stages completed so far:
-
-1. **Raw v4 event extraction** (`research/sentinel_data/`): dependency-free
-   extractor that verifies chain IDs and block hashes, decodes canonical
-   `Initialize`/`Swap`/`ModifyLiquidity` events, preserves large integers as
-   decimal strings, and emits hash-receipted JSONL. Two fixed evidence windows
-   are committed (mainnet smoke + Sepolia demo).
-2. **Gate 1 preregistration freeze** (`research/GATE1_PREREG.md`): a
-   deterministic selection rule run over a committed 50,000-block Unichain
-   mainnet window froze the core cohort before measurement —
-
-| Role | Pool | Swaps in window |
-|---|---|---:|
-| Core 1 | USDC / SOL | 8,257 |
-| Core 2 | USDC / HYPE | 6,869 |
-| Core 3 | ETH (native) / USDC | 5,144 |
-| Alternates | ETH/USD₮0 · ETH/WBTC · WBTC/USD₮0 | 2,247 / 1,647 / 939 |
-
-Token metadata is block-pinned; currency pairs were resolved on-chain from
-ERC-20 transfer intersections of single-pool swap transactions. The prereg
-also freezes reference-price alignment, the adverse-selection label, feature
-windows, leakage controls, splits, seeds — and commits to publishing Gate 1
-even if the thesis fails.
-
-Run the offline receipt verifier:
-
-```bash
-python3 -m research.sentinel_data.verify \
-  evidence/data-pipeline/unichain-mainnet-smoke-2026-08-23 \
-  evidence/data-pipeline/unichain-sepolia-demo
-```
-
-This is ingestion and design evidence, **not a Gate 1 result**. No reference
-price has been aligned, no label computed, no signal scored — the next
-checkpoint is the Gate 1 measurement itself under the frozen rules. See the
-[`preregistration`](research/GATE1_PREREG.md), the
-[`dated findings`](research/FINDINGS.md), and the
-[`research` README](research/README.md).
+| Artifact | Path |
+|---|---|
+| Gate 1 preregistration (frozen) | [research/GATE1_PREREG.md](research/GATE1_PREREG.md) |
+| Gate 1 report (fail on C3, pass on C1/C2) | [research/FINDINGS.md](research/FINDINGS.md) |
+| Measurement plan (seeded, committed pre-ingestion) | [evidence/gate1/measurement-plan-2025.json](evidence/gate1/measurement-plan-2025.json) |
+| 123 window manifests (hash-pinned) | [evidence/gate1/windows-2025/](evidence/gate1/windows-2025/) |
+| Calibration: continuous policy sweep | [evidence/gate1/backtest-continuous-fee.json](evidence/gate1/backtest-continuous-fee.json) |
+| Calibration: deployable vol-EMA policy | [evidence/gate1/calibration-vol-fee.json](evidence/gate1/calibration-vol-fee.json) |
+| Signal validation (self-drift rejected, lookback accepted) | [evidence/gate1/self-drift-signal-validation.json](evidence/gate1/self-drift-signal-validation.json) |
 
 ## Build and test
-
-Built from [Uniswap v4-template](https://github.com/Uniswap/v4-template).
 
 ```bash
 git clone --recurse-submodules https://github.com/chaosxcode/sentinel-hook
 cd sentinel-hook
 forge build
-forge test -vv
-python3 -m unittest discover -s research/tests -v
+forge test -vv                     # V0 + V1 Solidity suites
+python3 -m unittest discover -s research/tests -v   # research pipeline tests
 ```
 
-Deploy scripts (`script/00_DeployHook.s.sol` onward) follow the template's
-HookMiner flow; the first deployment target is **Unichain Sepolia**.
+Reproduction commands for every research artifact are in
+[`research/README.md`](research/README.md).
 
 ## Project links
 

@@ -124,6 +124,136 @@ The LPs losing every day deserve better than static fees. We're building it.
 
 ---
 
+
+
+---
+
+## Batch 2 — the rebuild (Sentinel v2)
+
+### Post 11 — the diagnosis (251 chars)
+```
+Gate 1 failed. So we did what the data told us.
+
+Replayed 2.5M labeled trades and asked: WHERE does the signal live?
+
+Answer: not in single trades. In TIME.
+
+Trailing losses predict the next window's losses at ρ = 0.61 — nearly the 0.15 bar we originally set, times four.
+```
+`[img]` 03-correlations.png
+
+### Post 12 — killing a bad idea fast (246 chars)
+```
+Honest engineering log:
+
+Our first deployable signal (swap-to-swap price drift) scored ρ ≈ -0.07 against real losses.
+
+Dead on arrival. Tick quantization murders it.
+
+So we published the rejection and moved to the next candidate. Killing bad ideas quickly is the job.
+```
+`[img]` self-drift validation JSON
+
+### Post 13 — the deployable signal (255 chars)
+```
+The signal that survived needs NO oracle:
+
+EMA of the pool's own 60-second realized price move.
+
+ρ = 0.36 against reference-priced losses — the full strength of the volatility component, computable entirely from hook state.
+
+If the hook can't see it on-chain, it doesn't ship.
+```
+`[img]` lookback validation table
+
+### Post 14 — calibration sweep (249 chars)
+```
+We calibrated the fee policy on Feb-Sep data, then evaluated on untouched Oct-Dec:
+
+18 out of 18 configurations beat static fees.
+
+Not one lucky parameter. The whole map works, and it responds monotonically — exactly what a real signal looks like.
+```
+`[img]` sweep table from calibration JSON
+
+### Post 15 — the numbers (247 chars)
+```
+Sentinel v2 backtest, ETH/USDC pool, out-of-sample:
+
++$2.98M net LP improvement vs static fees
+71% of fee uplift landed on toxic flow
+2x coverage of ongoing losses
+8bps average trader burden
+
+Same pool, same trades. The only change is when the fee is high.
+```
+`[img]` 04-backtest.png
+
+### Post 16 — the contract is real (252 chars)
+```
+SentinelHookV1 is written, tested, and pushed.
+
+• continuous calibrated fee curve
+• zero oracle dependencies
+• 257-run fuzz: fees never leave bounds, never jump limits
+• 14k gas overhead per swap (budget: 40k)
+
+Every safety rail from V0 carried over. Every claim has a test.
+```
+`[img]` test suite output
+
+### Post 17 — why the fail made it stronger (258 chars)
+```
+The uncomfortable take:
+
+Gate 1 failing publicly is WHY v2 exists. If we'd fudged the first result, we'd be marketing a signal that does nothing.
+
+Instead: fail → post-mortem → found loss clustering → rebuilt → validated.
+
+Accountability isn't a cost. It's the compounding asset.
+```
+`[img]` FINDINGS.md header
+
+### Post 18 — for LPs (240 chars)
+```
+If you provide liquidity on Uniswap v4, here's what our data shows:
+
+126 of 126 sampled days: you paid adverse selection.
+Top 10% of volatile windows: ~80% of your losses.
+
+You're not earning yield. You're selling insurance at the wrong price.
+```
+`[img]` 01-daily-losses.png
+
+### Post 19 — for the builders (250 chars)
+```
+Research stack built in public — all reproducible:
+
+• raw v4 event extractor w/ hash receipts
+• seeded measurement plans
+• trade-level labeling engine
+• clustered bootstrap stats
+• fee-policy backtest harness
+
+Fork it, verify it, beat it:
+github.com/chaosxcode/sentinel-hook
+```
+`[img]` repo file tree
+
+### Post 20 — what's next (247 chars)
+```
+Next milestones:
+
+→ new pre-registration with window-level bars
+→ one evaluation on untouched holdout data (Jan-Jul 2026)
+→ demo deployment of SentinelHookV1
+
+We get one shot at the holdout and we're doing it right.
+
+Static fees had a good run. Times change.
+```
+`[img]` roadmap graphic
+
 ## Posting notes
 
 - Posts 5-7 work best as a same-day sequence (problem → concentration → honesty).

@@ -1,12 +1,64 @@
 # Sentinel research findings
 
 **Last updated:** 2026-08-23  
-**Current stage:** Gate 1 measured — thesis terminated under pre-registered bars  
-**Gate status:** Gate 1 **FAILED** criterion 3 (predictability); criteria 1–2 passed
+**Current stage:** Sentinel v2 built — deployable signal validated, contract tested  
+**Gate status:** Gate 1 **FAILED** criterion 3 (predictability); v2 development evidence strong; holdout untouched
 
 This is a dated, evidence-linked research log for grant reviewers and other
 builders following Sentinel's progress. Findings are separated from hypotheses
 so implementation progress cannot be mistaken for economic validation.
+
+## 2026-08-23 — Sentinel v2: deployable signal found, calibrated, and shipped
+
+Following the Gate 1 failure, development focused on one question: **can a
+fee policy that an on-chain hook can actually compute still beat static
+fees?** Three results, each with a committed artifact:
+
+### 1. The deployable signal had to be discovered, and one candidate died
+
+External reference prices are unavailable to a hook, so the first candidate
+was swap-to-swap self-price drift. **Rejected**: tick quantization makes
+consecutive-swap drift nearly zero on the deep native-ETH/USDC pool, and the
+signal showed no correlation with reference-priced losses
+(ρ ≈ −0.07; [`self-drift-signal-validation.json`](../evidence/gate1/self-drift-signal-validation.json)).
+
+The accepted signal is **EMA[half-life 300s] of realized 60-second pool-price
+moves** (|ΔsqrtP| over a 60s lookback): ρ = **0.36** against reference-priced
+losses at 60–120s lookbacks
+([`self-drift-validation-lb60.json`](../evidence/gate1/self-drift-validation-lb60.json)) —
+recovering the full predictive strength of the volatility component that
+survived Gate 1, entirely from the hook's own state.
+
+### 2. The deployable policy beats static fees out-of-sample
+
+Calibrated on Feb–Sep 2025 labeled trades, evaluated on untouched Oct–Dec
+([`calibration-vol-fee.json`](../evidence/gate1/calibration-vol-fee.json)):
+
+| Config (k / cap) | Net LP (eval) | Precision | Toxic-loss coverage | Burden |
+|---|---:|---:|---:|---:|
+| 4 / 100bps | **+$2.98M** vs static | 0.71 | 1.98× | 8.1 bps |
+| 2 / 100bps | +$0.84M vs static | 0.70 | 0.56× | 2.3 bps |
+| 8 / 100bps | +$7.62M vs static | 0.71 | 5.05× | 20.7 bps |
+
+Monotone in k, stable precision across the sweep. The reference-priced
+(oracle) variant of the same policy had scored +$4.52M — the deployable
+signal retains ~66% of the oracle's economics with zero external dependencies.
+
+### 3. SentinelHookV1 is implemented and tested
+
+[`src/SentinelHookV1.sol`](../src/SentinelHookV1.sol): continuous policy with
+packed 10-second sample ring (one SSTORE per swap), time-decay EMA, and every
+V0 safety rail (hard bounds, rate-limited stepping, safe fallback,
+pre-swap observation). Foundry suite: 7 tests including a 257-run fuzz on
+fee bounds and rate-limit invariants. **Measured swap-path overhead:
+13.9–14.7k gas vs a no-hook pool** — inside the ≤40k Gate 3 budget.
+
+### What this does not establish
+
+All v2 evidence comes from calendar-2025 development data that informed the
+design. The locked holdout (Jan–Jul 2026) has not been ingested or evaluated
+and will be used exactly once, under a new pre-registration with window-level
+bars, before any performance claim is made.
 
 ## 2026-08-23 — Gate 1 validation result: FAIL on criterion 3
 
