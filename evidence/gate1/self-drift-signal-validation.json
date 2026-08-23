@@ -1,0 +1,10 @@
+{
+  "buckets_joined": 32280,
+  "half_life_seconds": 300.0,
+  "note": "deployable self-drift EMA variants vs external-reference labels; dev evidence only",
+  "role": "M2_eth_usdc",
+  "spearman_abs_drift_vs_absloss": -0.1079,
+  "spearman_positive_drift_vs_absloss": -0.1128,
+  "spearman_signed_drift_vs_absloss": -0.0459,
+  "spearman_signed_drift_vs_loss": -0.0712
+}

@@ -1,0 +1,9 @@
+{
+  "buckets_joined": 32280,
+  "half_life_seconds": 300.0,
+  "lookback_seconds": 60.0,
+  "note": "deployable self-price lookback-vol EMA vs external-reference labels; dev evidence only",
+  "role": "M2_eth_usdc",
+  "spearman_lookbackvol_vs_absloss": 0.3601,
+  "spearman_lookbackvol_vs_loss": 0.3501
+}

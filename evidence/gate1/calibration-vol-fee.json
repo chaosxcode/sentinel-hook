@@ -1,0 +1,229 @@
+{
+  "base_bps": 5.0,
+  "half_life_seconds": 300.0,
+  "lookback_seconds": 60.0,
+  "role": "M2_eth_usdc",
+  "sweep": [
+    {
+      "calib": {
+        "burden_bps": 0.002,
+        "coverage": 0.0006,
+        "extra_fees": 1939.63,
+        "net_dynamic": 997494.83,
+        "net_static": 995555.21,
+        "precision": 0.6889
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "k": 0.5
+      },
+      "eval": {
+        "burden_bps": 0.0,
+        "coverage": 0.0,
+        "extra_fees": 53.76,
+        "net_dynamic": 329658.22,
+        "net_static": 329604.46,
+        "precision": 0.6445
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 0.002,
+        "coverage": 0.0006,
+        "extra_fees": 1939.63,
+        "net_dynamic": 997494.83,
+        "net_static": 995555.21,
+        "precision": 0.6889
+      },
+      "config": {
+        "cap_bps": 100.0,
+        "k": 0.5
+      },
+      "eval": {
+        "burden_bps": 0.0,
+        "coverage": 0.0,
+        "extra_fees": 53.76,
+        "net_dynamic": 329658.22,
+        "net_static": 329604.46,
+        "precision": 0.6445
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 0.189,
+        "coverage": 0.0505,
+        "extra_fees": 151252.91,
+        "net_dynamic": 1146808.12,
+        "net_static": 995555.21,
+        "precision": 0.6861
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "k": 1.0
+      },
+      "eval": {
+        "burden_bps": 0.227,
+        "coverage": 0.0553,
+        "extra_fees": 83466.45,
+        "net_dynamic": 413070.91,
+        "net_static": 329604.46,
+        "precision": 0.6776
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 0.189,
+        "coverage": 0.0505,
+        "extra_fees": 151252.91,
+        "net_dynamic": 1146808.12,
+        "net_static": 995555.21,
+        "precision": 0.6861
+      },
+      "config": {
+        "cap_bps": 100.0,
+        "k": 1.0
+      },
+      "eval": {
+        "burden_bps": 0.227,
+        "coverage": 0.0553,
+        "extra_fees": 83466.45,
+        "net_dynamic": 413070.91,
+        "net_static": 329604.46,
+        "precision": 0.6776
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 1.798,
+        "coverage": 0.4791,
+        "extra_fees": 1435778.92,
+        "net_dynamic": 2431334.13,
+        "net_static": 995555.21,
+        "precision": 0.6884
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "k": 2.0
+      },
+      "eval": {
+        "burden_bps": 2.286,
+        "coverage": 0.5571,
+        "extra_fees": 840504.07,
+        "net_dynamic": 1170108.53,
+        "net_static": 329604.46,
+        "precision": 0.6975
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 1.798,
+        "coverage": 0.4792,
+        "extra_fees": 1436054.8,
+        "net_dynamic": 2431610.01,
+        "net_static": 995555.21,
+        "precision": 0.6884
+      },
+      "config": {
+        "cap_bps": 100.0,
+        "k": 2.0
+      },
+      "eval": {
+        "burden_bps": 2.286,
+        "coverage": 0.5571,
+        "extra_fees": 840504.07,
+        "net_dynamic": 1170108.53,
+        "net_static": 329604.46,
+        "precision": 0.6975
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 6.681,
+        "coverage": 1.7801,
+        "extra_fees": 5334829.23,
+        "net_dynamic": 6330384.44,
+        "net_static": 995555.21,
+        "precision": 0.6951
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "k": 4.0
+      },
+      "eval": {
+        "burden_bps": 8.04,
+        "coverage": 1.9593,
+        "extra_fees": 2956299.67,
+        "net_dynamic": 3285904.13,
+        "net_static": 329604.46,
+        "precision": 0.708
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 6.793,
+        "coverage": 1.8099,
+        "extra_fees": 5424311.14,
+        "net_dynamic": 6419866.35,
+        "net_static": 995555.21,
+        "precision": 0.695
+      },
+      "config": {
+        "cap_bps": 100.0,
+        "k": 4.0
+      },
+      "eval": {
+        "burden_bps": 8.111,
+        "coverage": 1.9766,
+        "extra_fees": 2982292.79,
+        "net_dynamic": 3311897.25,
+        "net_static": 329604.46,
+        "precision": 0.7075
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 14.435,
+        "coverage": 3.846,
+        "extra_fees": 11526303.55,
+        "net_dynamic": 12521858.76,
+        "net_static": 995555.21,
+        "precision": 0.7023
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "k": 8.0
+      },
+      "eval": {
+        "burden_bps": 16.292,
+        "coverage": 3.9701,
+        "extra_fees": 5990241.41,
+        "net_dynamic": 6319845.87,
+        "net_static": 329604.46,
+        "precision": 0.7197
+      }
+    },
+    {
+      "calib": {
+        "burden_bps": 17.882,
+        "coverage": 4.7646,
+        "extra_fees": 14279242.63,
+        "net_dynamic": 15274797.84,
+        "net_static": 995555.21,
+        "precision": 0.6991
+      },
+      "config": {
+        "cap_bps": 100.0,
+        "k": 8.0
+      },
+      "eval": {
+        "burden_bps": 20.728,
+        "coverage": 5.0513,
+        "extra_fees": 7621486.81,
+        "net_dynamic": 7951091.27,
+        "net_static": 329604.46,
+        "precision": 0.7134
+      }
+    }
+  ],
+  "trades": 2530814
+}
