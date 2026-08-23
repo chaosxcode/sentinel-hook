@@ -1,0 +1,1074 @@
+{
+  "M1_usdc_hype": {
+    "best_on_calib_score": {
+      "calib": {
+        "burden_bps": 0.0,
+        "coverage": null,
+        "extra_fees": 0.0,
+        "net_dynamic": 0.0,
+        "net_static": 0.0,
+        "notional": 0.0,
+        "precision": null,
+        "trades": 0
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "half_life_seconds": 1800.0,
+        "k": 4.0
+      },
+      "eval": {
+        "burden_bps": 0.288,
+        "coverage": 0.0109,
+        "extra_fees": 2.14,
+        "net_dynamic": -135.67,
+        "net_static": -137.81,
+        "notional": 74177.37,
+        "precision": 0.8113,
+        "trades": 6119
+      },
+      "score_eval": 0.030705451388888895
+    },
+    "sweep": [
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.116,
+          "coverage": 0.0044,
+          "extra_fees": 0.86,
+          "net_dynamic": -136.94,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7391,
+          "trades": 6119
+        },
+        "score_eval": 0.028034827586206897
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.116,
+          "coverage": 0.0044,
+          "extra_fees": 0.86,
+          "net_dynamic": -136.94,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7391,
+          "trades": 6119
+        },
+        "score_eval": 0.028034827586206897
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.888,
+          "coverage": 0.0336,
+          "extra_fees": 6.59,
+          "net_dynamic": -131.22,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7769,
+          "trades": 6119
+        },
+        "score_eval": 0.029396216216216214
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.888,
+          "coverage": 0.0336,
+          "extra_fees": 6.59,
+          "net_dynamic": -131.22,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7769,
+          "trades": 6119
+        },
+        "score_eval": 0.029396216216216214
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 3.26,
+          "coverage": 0.1234,
+          "extra_fees": 24.18,
+          "net_dynamic": -113.62,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7944,
+          "trades": 6119
+        },
+        "score_eval": 0.030070233128834358
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 3.314,
+          "coverage": 0.1254,
+          "extra_fees": 24.58,
+          "net_dynamic": -113.22,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7919,
+          "trades": 6119
+        },
+        "score_eval": 0.029965075437537726
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.076,
+          "coverage": 0.0029,
+          "extra_fees": 0.57,
+          "net_dynamic": -137.24,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7209,
+          "trades": 6119
+        },
+        "score_eval": 0.02750802631578947
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.076,
+          "coverage": 0.0029,
+          "extra_fees": 0.57,
+          "net_dynamic": -137.24,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7209,
+          "trades": 6119
+        },
+        "score_eval": 0.02750802631578947
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 0.971,
+          "coverage": 0.0368,
+          "extra_fees": 7.2,
+          "net_dynamic": -130.6,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7931,
+          "trades": 6119
+        },
+        "score_eval": 0.030057754891864057
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 0.971,
+          "coverage": 0.0368,
+          "extra_fees": 7.2,
+          "net_dynamic": -130.6,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.7931,
+          "trades": 6119
+        },
+        "score_eval": 0.030057754891864057
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 0.0,
+          "coverage": 0.0,
+          "extra_fees": 0.0,
+          "net_dynamic": -137.81,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": null,
+          "trades": 6119
+        },
+        "score_eval": 0.0
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 0.288,
+          "coverage": 0.0109,
+          "extra_fees": 2.14,
+          "net_dynamic": -135.67,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.8113,
+          "trades": 6119
+        },
+        "score_eval": 0.030705451388888895
+      },
+      {
+        "calib": {
+          "burden_bps": 0.0,
+          "coverage": null,
+          "extra_fees": 0.0,
+          "net_dynamic": 0.0,
+          "net_static": 0.0,
+          "notional": 0.0,
+          "precision": null,
+          "trades": 0
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 0.288,
+          "coverage": 0.0109,
+          "extra_fees": 2.14,
+          "net_dynamic": -135.67,
+          "net_static": -137.81,
+          "notional": 74177.37,
+          "precision": 0.8113,
+          "trades": 6119
+        },
+        "score_eval": 0.030705451388888895
+      }
+    ]
+  },
+  "M2_eth_usdc": {
+    "best_on_calib_score": {
+      "calib": {
+        "burden_bps": 3.957,
+        "coverage": 0.774,
+        "extra_fees": 3159814.05,
+        "net_dynamic": 4155369.25,
+        "net_static": 995555.21,
+        "notional": 7985046239.46,
+        "precision": 0.7114,
+        "trades": 1221009
+      },
+      "config": {
+        "cap_bps": 30.0,
+        "half_life_seconds": 300.0,
+        "k": 4.0
+      },
+      "eval": {
+        "burden_bps": 6.658,
+        "coverage": 1.0936,
+        "extra_fees": 2447871.54,
+        "net_dynamic": 2777476.01,
+        "net_static": 329604.46,
+        "notional": 3676851818.76,
+        "precision": 0.6934,
+        "trades": 1309805
+      },
+      "score_eval": 0.11389339741664162
+    },
+    "sweep": [
+      {
+        "calib": {
+          "burden_bps": 0.605,
+          "coverage": 0.1183,
+          "extra_fees": 482875.59,
+          "net_dynamic": 1478430.8,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6601,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 2.086,
+          "coverage": 0.3427,
+          "extra_fees": 766984.34,
+          "net_dynamic": 1096588.8,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6333,
+          "trades": 1309805
+        },
+        "score_eval": 0.10404214285714286
+      },
+      {
+        "calib": {
+          "burden_bps": 0.687,
+          "coverage": 0.1344,
+          "extra_fees": 548794.93,
+          "net_dynamic": 1544350.13,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6564,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 2.774,
+          "coverage": 0.4557,
+          "extra_fees": 1020104.5,
+          "net_dynamic": 1349708.96,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6245,
+          "trades": 1309805
+        },
+        "score_eval": 0.10258999639509733
+      },
+      {
+        "calib": {
+          "burden_bps": 1.632,
+          "coverage": 0.3191,
+          "extra_fees": 1302796.37,
+          "net_dynamic": 2298351.57,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6941,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 3.86,
+          "coverage": 0.634,
+          "extra_fees": 1419094.94,
+          "net_dynamic": 1748699.4,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6684,
+          "trades": 1309805
+        },
+        "score_eval": 0.1097838341968912
+      },
+      {
+        "calib": {
+          "burden_bps": 2.137,
+          "coverage": 0.4179,
+          "extra_fees": 1706252.65,
+          "net_dynamic": 2701807.85,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6771,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 6.629,
+          "coverage": 1.0889,
+          "extra_fees": 2437324.88,
+          "net_dynamic": 2766929.34,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6397,
+          "trades": 1309805
+        },
+        "score_eval": 0.10507909639462966
+      },
+      {
+        "calib": {
+          "burden_bps": 3.957,
+          "coverage": 0.774,
+          "extra_fees": 3159814.05,
+          "net_dynamic": 4155369.25,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.7114,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 300.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 6.658,
+          "coverage": 1.0936,
+          "extra_fees": 2447871.54,
+          "net_dynamic": 2777476.01,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6934,
+          "trades": 1309805
+        },
+        "score_eval": 0.11389339741664162
+      },
+      {
+        "calib": {
+          "burden_bps": 5.465,
+          "coverage": 1.069,
+          "extra_fees": 4364223.93,
+          "net_dynamic": 5359779.14,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6935,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 300.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 12.285,
+          "coverage": 2.0181,
+          "extra_fees": 4517139.35,
+          "net_dynamic": 4846743.81,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6627,
+          "trades": 1309805
+        },
+        "score_eval": 0.10886405128205129
+      },
+      {
+        "calib": {
+          "burden_bps": 0.414,
+          "coverage": 0.081,
+          "extra_fees": 330842.8,
+          "net_dynamic": 1326398.0,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6372,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 1.861,
+          "coverage": 0.3058,
+          "extra_fees": 684405.9,
+          "net_dynamic": 1014010.36,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6024,
+          "trades": 1309805
+        },
+        "score_eval": 0.09898652337452984
+      },
+      {
+        "calib": {
+          "burden_bps": 0.429,
+          "coverage": 0.0839,
+          "extra_fees": 342681.13,
+          "net_dynamic": 1338236.34,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6367,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 2.177,
+          "coverage": 0.3577,
+          "extra_fees": 800623.21,
+          "net_dynamic": 1130227.67,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.5979,
+          "trades": 1309805
+        },
+        "score_eval": 0.09824016077170418
+      },
+      {
+        "calib": {
+          "burden_bps": 1.28,
+          "coverage": 0.2505,
+          "extra_fees": 1022465.29,
+          "net_dynamic": 2018020.49,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6668,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 3.396,
+          "coverage": 0.5578,
+          "extra_fees": 1248509.44,
+          "net_dynamic": 1578113.9,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6368,
+          "trades": 1309805
+        },
+        "score_eval": 0.10459571260306243
+      },
+      {
+        "calib": {
+          "burden_bps": 1.509,
+          "coverage": 0.2952,
+          "extra_fees": 1205084.89,
+          "net_dynamic": 2200640.09,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6594,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 5.587,
+          "coverage": 0.9178,
+          "extra_fees": 2054419.88,
+          "net_dynamic": 2384024.34,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6141,
+          "trades": 1309805
+        },
+        "score_eval": 0.10088079112224807
+      },
+      {
+        "calib": {
+          "burden_bps": 3.356,
+          "coverage": 0.6565,
+          "extra_fees": 2679962.09,
+          "net_dynamic": 3675517.3,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6901,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 900.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 6.132,
+          "coverage": 1.0072,
+          "extra_fees": 2254579.46,
+          "net_dynamic": 2584183.92,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6714,
+          "trades": 1309805
+        },
+        "score_eval": 0.11027953033268104
+      },
+      {
+        "calib": {
+          "burden_bps": 4.425,
+          "coverage": 0.8655,
+          "extra_fees": 3533323.87,
+          "net_dynamic": 4528879.08,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6742,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 900.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 11.234,
+          "coverage": 1.8454,
+          "extra_fees": 4130572.08,
+          "net_dynamic": 4460176.54,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6368,
+          "trades": 1309805
+        },
+        "score_eval": 0.10460661563111981
+      },
+      {
+        "calib": {
+          "burden_bps": 0.291,
+          "coverage": 0.0569,
+          "extra_fees": 232107.15,
+          "net_dynamic": 1227662.36,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6439,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 1.682,
+          "coverage": 0.2763,
+          "extra_fees": 618448.86,
+          "net_dynamic": 948053.32,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.5904,
+          "trades": 1309805
+        },
+        "score_eval": 0.0969842568370987
+      },
+      {
+        "calib": {
+          "burden_bps": 0.291,
+          "coverage": 0.0569,
+          "extra_fees": 232107.15,
+          "net_dynamic": 1227662.36,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6439,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 1.0
+        },
+        "eval": {
+          "burden_bps": 1.856,
+          "coverage": 0.3048,
+          "extra_fees": 682281.73,
+          "net_dynamic": 1011886.19,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.5877,
+          "trades": 1309805
+        },
+        "score_eval": 0.09651452586206896
+      },
+      {
+        "calib": {
+          "burden_bps": 1.056,
+          "coverage": 0.2065,
+          "extra_fees": 843131.68,
+          "net_dynamic": 1838686.89,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6647,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 3.158,
+          "coverage": 0.5188,
+          "extra_fees": 1161227.33,
+          "net_dynamic": 1490831.8,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6238,
+          "trades": 1309805
+        },
+        "score_eval": 0.10247860671310959
+      },
+      {
+        "calib": {
+          "burden_bps": 1.143,
+          "coverage": 0.2237,
+          "extra_fees": 913061.64,
+          "net_dynamic": 1908616.85,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6624,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 2.0
+        },
+        "eval": {
+          "burden_bps": 4.866,
+          "coverage": 0.7994,
+          "extra_fees": 1789253.43,
+          "net_dynamic": 2118857.89,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6046,
+          "trades": 1309805
+        },
+        "score_eval": 0.09932536785861078
+      },
+      {
+        "calib": {
+          "burden_bps": 2.967,
+          "coverage": 0.5804,
+          "extra_fees": 2369512.11,
+          "net_dynamic": 3365067.31,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6837,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 30.0,
+          "half_life_seconds": 1800.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 5.733,
+          "coverage": 0.9418,
+          "extra_fees": 2108047.74,
+          "net_dynamic": 2437652.2,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6627,
+          "trades": 1309805
+        },
+        "score_eval": 0.10886636316064888
+      },
+      {
+        "calib": {
+          "burden_bps": 3.698,
+          "coverage": 0.7234,
+          "extra_fees": 2953220.81,
+          "net_dynamic": 3948776.02,
+          "net_static": 995555.21,
+          "notional": 7985046239.46,
+          "precision": 0.6749,
+          "trades": 1221009
+        },
+        "config": {
+          "cap_bps": 100.0,
+          "half_life_seconds": 1800.0,
+          "k": 4.0
+        },
+        "eval": {
+          "burden_bps": 10.48,
+          "coverage": 1.7215,
+          "extra_fees": 3853393.19,
+          "net_dynamic": 4182997.65,
+          "net_static": 329604.46,
+          "notional": 3676851818.76,
+          "precision": 0.6276,
+          "trades": 1309805
+        },
+        "score_eval": 0.10309288167938932
+      }
+    ]
+  }
+}
