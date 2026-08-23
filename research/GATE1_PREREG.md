@@ -232,7 +232,105 @@ instead of pretending they are known:
    emissions could in principle mislabel a native-side pair; the §3 metadata
    probes and the §7 Initialize verification are the compensating controls.
 
-## 8. Reporting commitment (prereg item 6)
+## 8. Measurement execution plan (amendment #1 — frozen before labels)
+
+This section was written after cohort freezing but **before any reference
+price, label, feature, or score was computed**. It operationalizes §4–§6 and
+records one feasibility-driven substitution.
+
+### 9.1 Venue discovery and the USDC/SOL substitution
+
+Venue-of-record candidates were discovered with the same frozen pair-resolution
+method over the full ranked universe of 128 nomination-window pools
+(`evidence/cohort/unichain-core-v1/venues.json`, `venues_sha256`
+`e6dcf88bb81ba11ba593fecb2a2bfc4c7636a7fdddf0a3f8b88a3796d52e6687`):
+
+- USDC/HYPE: 1 same-pair venue besides the study pool.
+- Native ETH/USDC: 7 same-pair venues besides the study pool.
+- **USDC/SOL: zero same-pair venues exist anywhere in the ranked universe.**
+  No other pool trading SOL appears in any resolved pair, so no on-chain
+  Unichain-v4 reference price for SOL can be constructed under §4's frozen
+  venue-of-record rule. All of the pool's labels would be
+  `stale_reference` by construction.
+
+**Substitution (invoked per §2's fixed alternate order, on data-availability
+grounds only):** alternate A1 (native ETH/USD₮0, `0x04b7…b16`) is promoted to
+the measured cohort. The measurable validation cohort is therefore:
+
+| # | Pool ID | Pair |
+|---|---|---|
+| M1 | `0xc4f393785b36430779a93eedd52dd20857a46142bbe48c88d4c655303a53279c` | USDC / HYPE |
+| M2 | `0x3258f413c7a88cda2fa8709a589d221a80f6574f63df5a5b6774485d8acc39d9` | ETH (native) / USDC |
+| M3 | `0x04b7dd024db64cfbe325191c818266e4776918cd9eaf021c26949a859e654b16` | ETH (native) / USD₮0 |
+
+USDC/SOL remains in the report as a frozen-cohort member excluded by the
+reference-availability rule; the exclusion is counted against nothing and
+favorably toward nothing. Remaining alternates: ETH/WBTC (`0x51f9…96e`),
+WBTC/USD₮0 (`0x05db…771`). Expanding the venue-of-record beyond v4 pools (e.g.,
+Unichain v3) was considered and rejected for scope control; it may be proposed
+only as a separate amendment before holdout evaluation.
+
+### 9.2 Frozen venue sets
+
+For each measurable pool, the reference-price series uses all same-pair venue
+pools listed in `venues.json` (excluding the study pool itself), each venue
+weighted by its `liquidity` at its most recent print, per §4. The native
+ETH/USDC venues double as the quote-asset deep venues required by §4;
+native ETH/USD₮0 venues serve the same role for M3.
+
+### 9.3 Validation-period sampling
+
+Continuous ingestion of every 2025 block through the public endpoint is
+infeasible (~15,750 range-capped calls per scan stream plus per-block header
+lookups for timestamps). Labels require chain-data timestamps (§4), so the
+validation measurement uses **systematic day-window sampling**, frozen here:
+
+- Frame: all UTC calendar days of the validation period (calendar 2025) that
+  fall within each measurable pool's observed lifetime.
+- Selection: 6 day-windows per calendar month, chosen deterministically by
+  seed `20260823` (module `research/sentinel_data/measurement_plan.py`; the
+  generated plan is committed before ingestion runs). Days are never added,
+  swapped, or re-drawn after any outcome is seen.
+- Window content: every `Swap` and `Initialize` event of the study pool and
+  its frozen venues inside `[day_start_block, day_end_block]`.
+- Inactive days (fewer than 100 labeled swaps, per §5) count as inactive in
+  the denominators of the ≥ 70% criterion; they are never re-sampled.
+- Month coverage starts at the first calendar month in which the pool emits
+  any swap (lifetime discovery uses one bounded probe scan per pool-month,
+  committed as evidence).
+
+### 9.4 Timestamps and verification mode
+
+Within each sampled day-window, block timestamps come from chain headers
+fetched at a bounded anchor stride: anchors every ≤ 900 blocks plus both
+window boundaries, joined by piecewise-linear interpolation in block number.
+The interpolation is **validated per window**: deterministic midpoint probes
+(every seventh gap) compare interpolated vs actual header timestamps, and any
+segment whose probe residual exceeds 3 seconds is re-fetched densely so every
+event block in it carries its true header. Probe residuals are recorded in the
+window manifest. Per-record block-hash checks are therefore performed at
+anchors, boundaries, and probed blocks rather than every event block; event
+records preserve the scan endpoint's reported block hash unchanged, and the
+window manifest records the mode as `anchor-verified`. This amends the earlier
+full-per-record wording, which public-endpoint compute-unit limits make
+infeasible at validation-period scale; the amendment was written before any
+label computation.
+
+### 9.5 Artifacts and storage
+
+Amendment #3 (written before label computation): raw ingested windows are
+**not committed wholesale** — the validation run produced ~900 MB compressed,
+beyond reasonable repository weight. Instead the repository commits: every
+window manifest (each pinning its `events_sha256`, block range, boundary
+hashes, probe residuals, and event counts), the frozen measurement plan, and
+the derived per-swap label/feature rows (`*-rows.jsonl`) from which every
+reported statistic is recomputable offline. Raw windows remain locally
+reproducible from the committed plan via
+`research.sentinel_data.run_gate1_ingest`, and their hashes make any shared
+copy verifiable. The locked holdout (Jan–Jul 2026) is not ingested in this
+phase under any circumstances.
+
+## 9. Reporting commitment (prereg item 6)
 
 The Gate 1 report will be published in `research/FINDINGS.md` with: per-pool
 active-day fractions, loss concentration, validation correlations with
@@ -241,7 +339,7 @@ and — if Gate 1 fails — the explicit statement that the thesis is terminated
 No result will be described as preliminary-in-passing: Gate 1 either passes
 its pre-registered bars or fails them.
 
-## 9. Reproduction
+## 10. Reproduction
 
 ```bash
 python3 -m research.sentinel_data.extract \

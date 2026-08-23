@@ -1,12 +1,109 @@
 # Sentinel research findings
 
 **Last updated:** 2026-08-23  
-**Current stage:** Gate 1 preregistration frozen  
-**Gate status:** Gate 1 has not been evaluated
+**Current stage:** Gate 1 measured — thesis terminated under pre-registered bars  
+**Gate status:** Gate 1 **FAILED** criterion 3 (predictability); criteria 1–2 passed
 
 This is a dated, evidence-linked research log for grant reviewers and other
 builders following Sentinel's progress. Findings are separated from hypotheses
 so implementation progress cannot be mistaken for economic validation.
+
+## 2026-08-23 — Gate 1 validation result: FAIL on criterion 3
+
+Sentinel ran its full pre-registered Gate 1 measurement over calendar-2025
+validation data and publishes the result under the frozen commitment: **the
+live-hook thesis is terminated.** Two of three bars passed decisively — LP
+pain on core Unichain v4 pools is real, persistent, and concentrated — but the
+pre-signal composite showed essentially no trade-level predictability of that
+pain, far below the registered bar. Per the grant application and
+[`GATE1_PREREG.md`](GATE1_PREREG.md) §5: *"Failure of any criterion = Gate 1
+failed; methodology and negative results are published and the live-hook
+thesis terminates."*
+
+### What ran
+
+| Item | Value |
+|---|---|
+| Frozen design | [`GATE1_PREREG.md`](GATE1_PREREG.md), plan SHA-256 `1188cac2…354aab0fa6` |
+| Measurable cohort | M1 USDC/HYPE (`0xc4f3…79c`), M2 ETH(native)/USDC (`0x3258…d9`) |
+| Sampling | 6 seeded day-windows per active month, 123 unique windows ingested |
+| Ingested events | ~4M decoded PoolManager events across 123 day-windows, 0 failed days |
+| Labeled trades (ok) | 2,536,933 (M2: 2,530,814 · M1: 6,119) |
+| Label horizon | 60 s against depth-weighted same-pair venue reference prices |
+| Verification | Boundary/anchor block hashes + probe residuals (max seen: 0.000 s); one trade re-derived by hand from raw events matched to 10⁻⁹ |
+
+Cohort changes, both forced by data availability before labels were computed
+and both documented in prereg amendments: USDC/SOL had no same-pair reference
+venue anywhere in the ranked universe (substituted by alternate A1 =
+ETH(native)/USD₮0 per fixed order); the substituted M3's own reference venues
+turned out too thin during 2025 (e.g. 15,333 study swaps vs 0 venue prints on
+2025-08-16), so every M3 label was stale-by-rule and M3 contributes zero
+labeled trades. No post-hoc substitutions were made after any outcome was
+seen.
+
+### The three pre-registered criteria
+
+| Criterion | Bar | Measured | Verdict |
+|---|---|---|---|
+| C1 — problem exists | positive adverse-selection cost on ≥ 70% of active pool-days | **126 / 126 (100.0%)** | **PASS** |
+| C2 — loss is concentrated | top-decile 5-min risk windows explain ≥ 30% of loss | **80.4%** pooled (per-pool: M2 75.5%, M1 69.8%) | **PASS** |
+| C3 — pain is predictable | pre-swap score vs ex-post cost: \|ρ\| ≥ 0.15, CI excludes 0 | **ρ = 0.0236**, 95% CI [0.0131, 0.0336] | **FAIL** |
+
+Bootstrap: cluster = pool-day, B = 10,000, seed 20260823 (prereg §6). Per-role
+ρ: M2 +0.0236, M1 −0.0267. Full statistics:
+[`gate1-validation-results.json`](../evidence/gate1/gate1-validation-results.json);
+committable derivatives: `evidence/gate1/derived/` (window-loss table +
+seeded 2% trade sample, both SHA-256-pinned in the results file).
+
+### What this establishes
+
+- **The problem is real and severe.** On every single active sampled day,
+  liquidity providers on the flagship native-ETH/USDC pool and on USDC/HYPE
+  paid more in adverse selection than they recovered — 126 days out of 126.
+  Five-minute risk windows are heavily concentrated: the worst decile carries
+  roughly three-quarters of all losses. This is direct, chain-verifiable
+  confirmation that v4 LPs on Unichain's busiest pools bear persistent,
+  concentrated toxic-flow costs.
+- **Our signal did not predict it.** A pre-trade composite of volatility
+  (30 s EWMA), signed flow pressure (300 s), and pool-vs-reference deviation —
+  equal-weighted because the v4-era training split is empty (prereg §6
+  amendment) — ranks trades barely better than chance with respect to realized
+  60-second adverse-selection cost (ρ ≈ 0.02).
+
+### Why we think C3 failed (stated as interpretation, not finding)
+
+Single-trade outcomes at a 60-second horizon are dominated by reference-price
+noise; even an informative signal can drown at trade-level rank correlation.
+Window-level or regime-level evaluation might behave differently. But those
+are *different experiments*: the honest reading of the registered experiment is
+that the five-signal dynamic-fee thesis, as specified, did not clear its own
+bar. Resurrecting it with looser aggregation would be moving the goalposts;
+any successor study must be a new pre-registration with new falsifiable bars
+and fresh data boundaries.
+
+### Consequences
+
+Per the registered commitment: no Gate 2 economics study, no prototype
+progression, no request for continued funding of the live-hook thesis on these
+claims. HookGuard (risk transparency) and the V0 safety skeleton remain
+standalone deliverables. The negative result, methodology, and all evidence
+are published so that anyone — including us — cannot quietly re-run this study
+until it passes.
+
+### Reproduce
+
+```bash
+python3 -m research.sentinel_data.run_gate1_ingest \
+  --config research/configs/unichain-core-cohort-v1.json \
+  --plan evidence/gate1/measurement-plan-2025.json \
+  --output-root evidence/gate1/windows-2025   # resumable; skips completed days
+
+python3 -m research.sentinel_data.analyze_gate1 \
+  --windows-root evidence/gate1/windows-2025 \
+  --output evidence/gate1/gate1-validation-results.json
+
+python3 -m unittest discover -s research/tests -v
+```
 
 ## 2026-08-23 — Gate 1 preregistration checkpoint
 

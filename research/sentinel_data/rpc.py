@@ -3,15 +3,21 @@
 from __future__ import annotations
 
 import json
+import threading
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Iterable
 
 
 class RpcError(RuntimeError):
     """Raised when a JSON-RPC request cannot be completed safely."""
+
+
+class RateLimited(RpcError):
+    """Raised on 429/403 so callers can rotate endpoints instead of halving."""
 
 
 @dataclass(frozen=True)
@@ -22,34 +28,61 @@ class BlockReceipt:
 
 
 class JsonRpcClient:
-    def __init__(self, url: str, *, timeout: float = 30.0, retries: int = 3) -> None:
+    def __init__(
+        self,
+        url: str,
+        *,
+        timeout: float = 30.0,
+        retries: int = 8,
+        pace: float = 0.0,
+        retry_on_rate_limit: bool = False,
+    ) -> None:
         self._url = url
         self._timeout = timeout
         self._retries = retries
+        self._pace = pace
         self._request_id = 0
+        self._id_lock = threading.Lock()
+        self._retry_on_rate_limit = retry_on_rate_limit
 
     def _post(self, payload: Any) -> Any:
         body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
-        request = urllib.request.Request(
-            self._url,
-            data=body,
-            headers={"Content-Type": "application/json", "User-Agent": "sentinel-data-pipeline/0.1"},
-            method="POST",
-        )
         last_error: Exception | None = None
         for attempt in range(self._retries):
+            request = urllib.request.Request(
+                self._url,
+                data=body,
+                headers={"Content-Type": "application/json", "User-Agent": "sentinel-data-pipeline/0.1"},
+                method="POST",
+            )
             try:
                 with urllib.request.urlopen(request, timeout=self._timeout) as response:
-                    return json.load(response)
+                    result = json.load(response)
+                if self._pace:
+                    time.sleep(self._pace)
+                return result
+            except urllib.error.HTTPError as exc:
+                if exc.code in (429, 403):
+                    if self._retry_on_rate_limit and attempt + 1 < self._retries:
+                        time.sleep(min(30.0, 2.5 * (2**attempt)))
+                        continue
+                    raise RateLimited(f"RPC {exc.code}: {exc.reason}") from exc
+                if exc.code == 400:
+                    raise
+                last_error = exc
+                if attempt + 1 < self._retries:
+                    time.sleep(min(20.0, 1.0 * (2**attempt)))
             except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
                 last_error = exc
                 if attempt + 1 < self._retries:
-                    time.sleep(0.5 * (2**attempt))
+                    time.sleep(min(20.0, 1.0 * (2**attempt)))
         raise RpcError(f"RPC transport failed after {self._retries} attempts: {last_error}")
 
     def call(self, method: str, params: list[Any]) -> Any:
-        self._request_id += 1
-        payload = {"jsonrpc": "2.0", "id": self._request_id, "method": method, "params": params}
+        with self._id_lock:
+            self._request_id += 1
+            request_id = self._request_id
+        payload = {"jsonrpc": "2.0", "id": request_id, "method": method, "params": params}
         response = self._post(payload)
         if not isinstance(response, dict):
             raise RpcError(f"RPC {method} returned a non-object response")
@@ -64,9 +97,11 @@ class JsonRpcClient:
         payload: list[dict[str, Any]] = []
         order: list[int] = []
         for method, params in calls:
-            self._request_id += 1
-            order.append(self._request_id)
-            payload.append({"jsonrpc": "2.0", "id": self._request_id, "method": method, "params": params})
+            with self._id_lock:
+                self._request_id += 1
+                request_id = self._request_id
+            order.append(request_id)
+            payload.append({"jsonrpc": "2.0", "id": request_id, "method": method, "params": params})
         if not payload:
             return []
 
@@ -138,6 +173,8 @@ class JsonRpcClient:
             ]
             try:
                 result = self.call("eth_getLogs", params)
+            except RateLimited:
+                raise
             except RpcError:
                 if active_chunk == 1:
                     raise
@@ -150,18 +187,37 @@ class JsonRpcClient:
             active_chunk = min(chunk_size, active_chunk * 2)
         return logs
 
-    def get_blocks(self, numbers: Iterable[int], *, batch_size: int = 100) -> dict[int, BlockReceipt]:
+    def get_blocks(
+        self,
+        numbers: Iterable[int],
+        *,
+        batch_size: int = 100,
+        workers: int = 6,
+    ) -> dict[int, BlockReceipt]:
         unique = sorted(set(numbers))
         receipts: dict[int, BlockReceipt] = {}
-        for offset in range(0, len(unique), batch_size):
-            chunk = unique[offset : offset + batch_size]
+        chunks = [unique[offset : offset + batch_size] for offset in range(0, len(unique), batch_size)]
+
+        def fetch_chunk(chunk: list[int]) -> list[Any]:
             try:
-                results = self.batch(("eth_getBlockByNumber", [hex(number), False]) for number in chunk)
+                return self.batch(("eth_getBlockByNumber", [hex(number), False]) for number in chunk)
+            except RateLimited:
+                raise
             except RpcError:
+                if len(chunk) == 1:
+                    raise
                 # Some otherwise standards-compliant public endpoints disable
                 # JSON-RPC batching. Preserve correctness with a slower
                 # sequential fallback instead of requiring a specific vendor.
-                results = [self.call("eth_getBlockByNumber", [hex(number), False]) for number in chunk]
+                return [self.call("eth_getBlockByNumber", [hex(number), False]) for number in chunk]
+
+        chunk_results: list[list[Any]] = []
+        if len(chunks) > 1 and workers > 1:
+            with ThreadPoolExecutor(max_workers=workers) as executor:
+                chunk_results = list(executor.map(fetch_chunk, chunks))
+        else:
+            chunk_results = [fetch_chunk(chunk) for chunk in chunks]
+        for chunk, results in zip(chunks, chunk_results, strict=True):
             for requested, block in zip(chunk, results, strict=True):
                 if not isinstance(block, dict):
                     raise RpcError(f"block {requested} was not returned")

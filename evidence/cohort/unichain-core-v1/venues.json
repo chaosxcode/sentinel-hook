@@ -1,0 +1,112 @@
+{
+  "chain_id": 130,
+  "generated_at": "2026-08-23T15:38:06.937999+00:00",
+  "input_evidence": "evidence/data-pipeline/unichain-mainnet-cohort-nomination-2026-08-23",
+  "inputs": [
+    {
+      "events_sha256": "cc092899e62da0a46854b92cd20068c1a43a031ef11927ce5f876c4cebfc4f87",
+      "name": "unichain-mainnet-cohort-nomination-2026-08-23",
+      "record_count": 46457
+    }
+  ],
+  "name": "unichain-core-v1-venues",
+  "quote_deep_venues": [
+    {
+      "currencies": [
+        "0x0000000000000000000000000000000000000000",
+        "0x9151434b16b9763660705744891fa906f660ecc5"
+      ],
+      "pair_status": "resolved_with_native_currency",
+      "pool_id": "0x04b7dd024db64cfbe325191c818266e4776918cd9eaf021c26949a859e654b16",
+      "role": "quote_eth_usdt0",
+      "swap_count_in_window": 2247
+    }
+  ],
+  "schema": "sentinel.venues.v1",
+  "study_pair_keys": [
+    [
+      "0x0000000000000000000000000000000000000000",
+      "0x078d782b760474a361dda0af3839290b0ef57ad6"
+    ],
+    [
+      "0x078d782b760474a361dda0af3839290b0ef57ad6",
+      "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d"
+    ],
+    [
+      "0x078d782b760474a361dda0af3839290b0ef57ad6",
+      "0xbde8a5331e8ac4831cf8ea9e42e229219eafab97"
+    ]
+  ],
+  "venues": {
+    "core1_usdc_sol": [
+      {
+        "currencies": [
+          "0x078d782b760474a361dda0af3839290b0ef57ad6",
+          "0xbde8a5331e8ac4831cf8ea9e42e229219eafab97"
+        ],
+        "pair_status": "resolved",
+        "pool_id": "0x75b19237e8069600566be945953c5fd815cdfb26bd3972821d0ae8d6b7d5e51d",
+        "swap_count_in_window": 8257
+      }
+    ],
+    "core2_usdc_hype": [
+      {
+        "currencies": [
+          "0x078d782b760474a361dda0af3839290b0ef57ad6",
+          "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d"
+        ],
+        "pair_status": "resolved",
+        "pool_id": "0xc4f393785b36430779a93eedd52dd20857a46142bbe48c88d4c655303a53279c",
+        "swap_count_in_window": 6869
+      },
+      {
+        "currencies": [
+          "0x078d782b760474a361dda0af3839290b0ef57ad6",
+          "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d"
+        ],
+        "pair_status": "resolved",
+        "pool_id": "0xb25519988d42778f3ae75636bb92925597c0c99ce050a0b178a40e54ded540d7",
+        "swap_count_in_window": 546
+      }
+    ],
+    "core3_eth_usdc": [
+      {
+        "currencies": [
+          "0x0000000000000000000000000000000000000000",
+          "0x078d782b760474a361dda0af3839290b0ef57ad6"
+        ],
+        "pair_status": "resolved_with_native_currency",
+        "pool_id": "0x3258f413c7a88cda2fa8709a589d221a80f6574f63df5a5b6774485d8acc39d9",
+        "swap_count_in_window": 5144
+      },
+      {
+        "currencies": [
+          "0x0000000000000000000000000000000000000000",
+          "0x078d782b760474a361dda0af3839290b0ef57ad6"
+        ],
+        "pair_status": "resolved_with_native_currency",
+        "pool_id": "0x25939956ef14a098d95051d86c75890cfd623a9eeba055e46d8dd9135980b37c",
+        "swap_count_in_window": 428
+      },
+      {
+        "currencies": [
+          "0x0000000000000000000000000000000000000000",
+          "0x078d782b760474a361dda0af3839290b0ef57ad6"
+        ],
+        "pair_status": "resolved_with_native_currency",
+        "pool_id": "0x2289791ab3c4a90c741427c52ea9411ba13bf8184c0b7bae4fea26262f400357",
+        "swap_count_in_window": 241
+      },
+      {
+        "currencies": [
+          "0x0000000000000000000000000000000000000000",
+          "0x078d782b760474a361dda0af3839290b0ef57ad6"
+        ],
+        "pair_status": "resolved_with_native_currency",
+        "pool_id": "0x9bdd72519ad7e2b5f0d5441d7af389771cc04a8406cd577fac0c68a8b6b396bd",
+        "swap_count_in_window": 185
+      }
+    ]
+  },
+  "venues_sha256": "167b28c21db613edb73c591ff14f9a395bd2cc10d52a564831f7b3b48c61545f"
+}

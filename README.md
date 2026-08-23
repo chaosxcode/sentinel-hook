@@ -11,13 +11,13 @@ low fees in normal conditions, higher LP compensation when market conditions
 become dangerous. The full research plan, pre-registered gates and budget are
 in the **[grant application](https://chaosxcode.github.io/sentinel-hook/)**.
 
-> **Latest research update — 2026-08-23:** the Gate 1 preregistration is now
-> **frozen**: core cohort (USDC/SOL, USDC/HYPE, native ETH/USDC + three
-> hash-receipted alternates), token metadata with block-pinned provenance,
-> reference-price rules, adverse-selection label, leakage controls, splits and
-> seeds — all fixed before any measurement. Read the
-> **[Gate 1 preregistration](research/GATE1_PREREG.md)** and the
-> **[dated findings log](research/FINDINGS.md)**.
+> **Latest research update — 2026-08-23:** Gate 1 has been measured and the
+> result is published under the pre-registered commitment: **criteria 1–2
+> passed decisively (adverse selection hit LPs on 126 of 126 active pool-days;
+> top-decile windows carry ~80% of losses), criterion 3 failed (trade-level
+> predictability ρ ≈ 0.02 « 0.15) — so the live-hook thesis is terminated.**
+> Read the **[Gate 1 report](research/FINDINGS.md)** and the
+> **[preregistration](research/GATE1_PREREG.md)**.
 
 ## What this repo is (and deliberately is not)
 

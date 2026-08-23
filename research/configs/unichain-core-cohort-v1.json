@@ -3,7 +3,8 @@
   "name": "unichain-core-v1",
   "chain_id": 130,
   "rpc_url_env": "UNICHAIN_MAINNET_RPC_URL",
-  "rpc_url": "https://mainnet.unichain.org",
+  "rpc_url": "https://unichain.drpc.org",
+  "header_rpc_url_env": "ALCHEMY_UNICHAIN_MAINNET_RPC_URL",
   "pool_manager": "0x1F98400000000000000000000000000000000004",
   "evidence": [
     "evidence/data-pipeline/unichain-mainnet-cohort-nomination-2026-08-23"

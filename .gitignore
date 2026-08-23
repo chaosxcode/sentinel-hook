@@ -19,3 +19,7 @@ node_modules/
 # Python research tooling
 __pycache__/
 *.py[cod]
+
+# Gate 1 raw windows and full trade table stay local (hash-pinned in manifests/results)
+evidence/gate1/windows-2025/*/events.jsonl.gz
+evidence/gate1/gate1-validation-results-rows.jsonl
