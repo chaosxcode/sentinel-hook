@@ -3,6 +3,9 @@
 This directory begins the repo's Weeks 1–2 milestone: reproducible raw-data
 ingestion before any Gate 1 modeling or performance claim.
 
+**Current measured findings and next checkpoint:**
+[`FINDINGS.md`](FINDINGS.md) (last updated 2026-08-23).
+
 The extractor reads canonical `Initialize`, `Swap`, and `ModifyLiquidity`
 events from a configured Uniswap v4 `PoolManager`, validates the chain and
 block hashes, normalizes signed values, and writes:

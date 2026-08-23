@@ -2,12 +2,19 @@
 
 # Sentinel — adverse-selection-aware dynamic fees for Uniswap v4
 
+[![Test Suite](https://github.com/chaosxcode/sentinel-hook/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/chaosxcode/sentinel-hook/actions/workflows/test.yml)
+
 > **Static fees charge the same. LP risk does not.**
 
 Sentinel tests whether Uniswap v4 can price adverse-selection risk better:
 low fees in normal conditions, higher LP compensation when market conditions
 become dangerous. The full research plan, pre-registered gates and budget are
 in the **[grant application](https://chaosxcode.github.io/sentinel-hook/)**.
+
+> **Latest research update — 2026-08-23:** the first raw-data checkpoint is
+> published with measured mainnet observations, exact evidence hashes, honest
+> limitations, and the next Gate 1 preregistration tasks. Read the
+> **[dated findings log](research/FINDINGS.md)**.
 
 ## What this repo is (and deliberately is not)
 
@@ -112,6 +119,7 @@ This is ingestion evidence, **not a Gate 1 pass**. The next increment must
 freeze the three-pool cohort, token metadata, reference-price alignment,
 adverse-selection labels, leakage controls, exclusions, and validation split
 before measuring the pre-registered Gate 1 criteria. See the
+[`dated findings`](research/FINDINGS.md) for what this stage taught us and the
 [`research` README](research/README.md) for reproduction commands and limits.
 
 ## Build and test
@@ -132,6 +140,7 @@ HookMiner flow; the first deployment target is **Unichain Sepolia**.
 ## Project links
 
 - **Grant application:** https://chaosxcode.github.io/sentinel-hook/
+- **Dated research findings:** [research/FINDINGS.md](research/FINDINGS.md)
 - **Prior work — HookGuard:** transparent risk scanner for Uniswap v4 hooks:
   https://github.com/chaosxcode/hookguard
 
