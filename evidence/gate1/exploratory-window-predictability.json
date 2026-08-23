@@ -1,0 +1,13 @@
+{
+  "ar1_loss_autocorr": 0.4167,
+  "buckets": 32604,
+  "correlations": {
+    "prev_dev -> target_loss": -0.0019,
+    "prev_loss -> target_abs_loss": 0.4936,
+    "prev_loss -> target_loss": 0.4167,
+    "trail_flow_imbalance -> target_loss": -0.0363,
+    "trail_loss3 -> target_abs_loss": 0.6066,
+    "trail_loss3 -> target_loss": 0.4828,
+    "trail_vol_mean -> target_abs_loss": 0.3616
+  }
+}

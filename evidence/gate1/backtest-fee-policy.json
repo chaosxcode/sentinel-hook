@@ -1,0 +1,298 @@
+{
+  "M1_usdc_hype": {
+    "best_config_summary": {
+      "avg_fee_paid_bps_dynamic": 49.30198351438861,
+      "config": {
+        "base_fee_bps": 5,
+        "elevated_fee_bps": 300,
+        "ema_half_life_trades": 200,
+        "threshold_quantile": 0.9
+      },
+      "elevated_share": 0.06504330773002125,
+      "improvement_vs_same_base_static": 358.29142225814024,
+      "net_dynamic": 148.61431630658169
+    },
+    "sweep": [
+      {
+        "avg_fee_paid_bps_dynamic": 18.56527526612786,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 30,
+          "ema_half_life_trades": 25,
+          "threshold_quantile": 0.6
+        },
+        "dynamic_fees_collected": 137.7123338575389,
+        "elevated_swap_share": 0.38601078607615624,
+        "improvement_vs_best_static": -84.81978357698353,
+        "net_dynamic": -79.38250934183705,
+        "net_static": {
+          "1.0": -209.67710595155856,
+          "5.0": -180.00615696028908,
+          "30.0": 5.437274235146475
+        },
+        "static_fees_collected": {
+          "1.0": 7.417737247817388,
+          "30.0": 222.53211743452243,
+          "5.0": 37.08868623908688
+        },
+        "total_adverse_selection": 217.09484319937596,
+        "total_notional": 74177.37247817357,
+        "trades": 6119
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 17.912198573876182,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 30,
+          "ema_half_life_trades": 50,
+          "threshold_quantile": 0.6
+        },
+        "dynamic_fees_collected": 132.8679825517423,
+        "elevated_swap_share": 0.35643078934466416,
+        "improvement_vs_best_static": -89.66413488278013,
+        "net_dynamic": -84.22686064763366,
+        "net_static": {
+          "1.0": -209.67710595155856,
+          "5.0": -180.00615696028908,
+          "30.0": 5.437274235146475
+        },
+        "static_fees_collected": {
+          "1.0": 7.417737247817388,
+          "30.0": 222.53211743452243,
+          "5.0": 37.08868623908688
+        },
+        "total_adverse_selection": 217.09484319937596,
+        "total_notional": 74177.37247817357,
+        "trades": 6119
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 39.70912539897436,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 100,
+          "ema_half_life_trades": 50,
+          "threshold_quantile": 0.75
+        },
+        "dynamic_fees_collected": 294.55185855022233,
+        "elevated_swap_share": 0.22046085961758458,
+        "improvement_vs_best_static": 72.0197411156999,
+        "net_dynamic": 77.45701535084638,
+        "net_static": {
+          "1.0": -209.67710595155856,
+          "5.0": -180.00615696028908,
+          "30.0": 5.437274235146475
+        },
+        "static_fees_collected": {
+          "1.0": 7.417737247817388,
+          "30.0": 222.53211743452243,
+          "5.0": 37.08868623908688
+        },
+        "total_adverse_selection": 217.09484319937596,
+        "total_notional": 74177.37247817357,
+        "trades": 6119
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 34.16176362980047,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 100,
+          "ema_half_life_trades": 100,
+          "threshold_quantile": 0.75
+        },
+        "dynamic_fees_collected": 253.4029865279032,
+        "elevated_swap_share": 0.1593397613989214,
+        "improvement_vs_best_static": 30.870869093380776,
+        "net_dynamic": 36.30814332852725,
+        "net_static": {
+          "1.0": -209.67710595155856,
+          "5.0": -180.00615696028908,
+          "30.0": 5.437274235146475
+        },
+        "static_fees_collected": {
+          "1.0": 7.417737247817388,
+          "30.0": 222.53211743452243,
+          "5.0": 37.08868623908688
+        },
+        "total_adverse_selection": 217.09484319937596,
+        "total_notional": 74177.37247817357,
+        "trades": 6119
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 49.30198351438861,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 300,
+          "ema_half_life_trades": 200,
+          "threshold_quantile": 0.9
+        },
+        "dynamic_fees_collected": 365.70915950595764,
+        "elevated_swap_share": 0.06504330773002125,
+        "improvement_vs_best_static": 143.1770420714352,
+        "net_dynamic": 148.61431630658169,
+        "net_static": {
+          "1.0": -209.67710595155856,
+          "5.0": -180.00615696028908,
+          "30.0": 5.437274235146475
+        },
+        "static_fees_collected": {
+          "1.0": 7.417737247817388,
+          "30.0": 222.53211743452243,
+          "5.0": 37.08868623908688
+        },
+        "total_adverse_selection": 217.09484319937596,
+        "total_notional": 74177.37247817357,
+        "trades": 6119
+      }
+    ],
+    "total_adverse_selection_units": 217.09484319937596,
+    "trades": 6119
+  },
+  "M2_eth_usdc": {
+    "best_config_summary": {
+      "avg_fee_paid_bps_dynamic": 48.82248828427707,
+      "config": {
+        "base_fee_bps": 5,
+        "elevated_fee_bps": 300,
+        "ema_half_life_trades": 200,
+        "threshold_quantile": 0.9
+      },
+      "elevated_share": 0.09961775144281643,
+      "improvement_vs_same_base_static": 55770098.326156974,
+      "net_dynamic": 48800352.53460715
+    },
+    "sweep": [
+      {
+        "avg_fee_paid_bps_dynamic": 18.390735983861845,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 30,
+          "ema_half_life_trades": 25,
+          "threshold_quantile": 0.6
+        },
+        "dynamic_fees_collected": 21447088.82594022,
+        "elevated_swap_share": 0.3995489198336978,
+        "improvement_vs_best_static": -13538605.348721378,
+        "net_dynamic": 13311153.228568159,
+        "net_static": {
+          "1.0": -6969745.79154982,
+          "5.0": -2304986.5682624374,
+          "30.0": 26849758.577289537
+        },
+        "static_fees_collected": {
+          "1.0": 1166189.8058222414,
+          "30.0": 34985694.1746616,
+          "5.0": 5830949.029109624
+        },
+        "total_adverse_selection": 8135935.597372062,
+        "total_notional": 11661898058.21821,
+        "trades": 2530814
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 18.301240594659454,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 30,
+          "ema_half_life_trades": 50,
+          "threshold_quantile": 0.6
+        },
+        "dynamic_fees_collected": 21342720.215384338,
+        "elevated_swap_share": 0.3989645228768294,
+        "improvement_vs_best_static": -13642973.959277261,
+        "net_dynamic": 13206784.618012276,
+        "net_static": {
+          "1.0": -6969745.79154982,
+          "5.0": -2304986.5682624374,
+          "30.0": 26849758.577289537
+        },
+        "static_fees_collected": {
+          "1.0": 1166189.8058222414,
+          "30.0": 34985694.1746616,
+          "5.0": 5830949.029109624
+        },
+        "total_adverse_selection": 8135935.597372062,
+        "total_notional": 11661898058.21821,
+        "trades": 2530814
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 39.198946056697515,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 100,
+          "ema_half_life_trades": 50,
+          "threshold_quantile": 0.75
+        },
+        "dynamic_fees_collected": 45713411.29028011,
+        "elevated_swap_share": 0.24951142201678986,
+        "improvement_vs_best_static": 10727717.115618512,
+        "net_dynamic": 37577475.69290805,
+        "net_static": {
+          "1.0": -6969745.79154982,
+          "5.0": -2304986.5682624374,
+          "30.0": 26849758.577289537
+        },
+        "static_fees_collected": {
+          "1.0": 1166189.8058222414,
+          "30.0": 34985694.1746616,
+          "5.0": 5830949.029109624
+        },
+        "total_adverse_selection": 8135935.597372062,
+        "total_notional": 11661898058.21821,
+        "trades": 2530814
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 38.81600094835604,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 100,
+          "ema_half_life_trades": 100,
+          "threshold_quantile": 0.75
+        },
+        "dynamic_fees_collected": 45266824.60874295,
+        "elevated_swap_share": 0.24902462211762696,
+        "improvement_vs_best_static": 10281130.434081353,
+        "net_dynamic": 37130889.01137089,
+        "net_static": {
+          "1.0": -6969745.79154982,
+          "5.0": -2304986.5682624374,
+          "30.0": 26849758.577289537
+        },
+        "static_fees_collected": {
+          "1.0": 1166189.8058222414,
+          "30.0": 34985694.1746616,
+          "5.0": 5830949.029109624
+        },
+        "total_adverse_selection": 8135935.597372062,
+        "total_notional": 11661898058.21821,
+        "trades": 2530814
+      },
+      {
+        "avg_fee_paid_bps_dynamic": 48.82248828427707,
+        "config": {
+          "base_fee_bps": 5,
+          "elevated_fee_bps": 300,
+          "ema_half_life_trades": 200,
+          "threshold_quantile": 0.9
+        },
+        "dynamic_fees_collected": 56936288.13197921,
+        "elevated_swap_share": 0.09961775144281643,
+        "improvement_vs_best_static": 21950593.957317613,
+        "net_dynamic": 48800352.53460715,
+        "net_static": {
+          "1.0": -6969745.79154982,
+          "5.0": -2304986.5682624374,
+          "30.0": 26849758.577289537
+        },
+        "static_fees_collected": {
+          "1.0": 1166189.8058222414,
+          "30.0": 34985694.1746616,
+          "5.0": 5830949.029109624
+        },
+        "total_adverse_selection": 8135935.597372062,
+        "total_notional": 11661898058.21821,
+        "trades": 2530814
+      }
+    ],
+    "total_adverse_selection_units": 8135935.597373003,
+    "trades": 2530814
+  }
+}
