@@ -63,11 +63,18 @@ evidence.
 on Unichain Sepolia, the live fee-ramp demo, and its test suite document the
 scaffolding every future version inherits.
 
-## Live deployment (V0 demo)
+## Live deployments (Unichain Sepolia)
 
-**Unichain Sepolia:** [`0xcbd5bac7b96770d7f18b97d05d6518a4d0913080`](https://sepolia.uniscan.xyz/address/0xcbd5bac7b96770d7f18b97d05d6518a4d0913080)
-— CREATE2-mined so the address encodes the hook's permission bits. A V1
-deployment follows the same scripts (`script/00_DeployHook.s.sol`).
+**SentinelHookV1 (continuous toxicity pricing):**
+[`0x290d2d0af6dd11b6e235eac6d7528f5474753080`](https://sepolia.uniscan.xyz/address/0x290d2d0af6dd11b6e235eac6d7528f5474753080)
+— deployed CREATE2 (`0x...3080` permission suffix), with an on-chain demo:
+calm swap pays the 5bps base; a sustained trend ramps the fee continuously
+500 → 7,704 (0.05% → 0.77%, rate-limited steps, `FeeUpdated` events); two
+quiet hours decay it back toward base. Demo script:
+[`script/06_DemoSwapsV1.s.sol`](script/06_DemoSwapsV1.s.sol).
+
+**SentinelHookV0 (safety skeleton, baseline):**
+[`0xcbd5bac7b96770d7f18b97d05d6518a4d0913080`](https://sepolia.uniscan.xyz/address/0xcbd5bac7b96770d7f18b97d05d6518a4d0913080)
 
 ## Evidence index
 
