@@ -1,0 +1,40 @@
+{
+  "chain_id": 1301,
+  "config": "research/configs/unichain-sepolia-demo.json",
+  "event_counts": {
+    "Initialize": 1,
+    "ModifyLiquidity": 1,
+    "Swap": 7
+  },
+  "events_file": "events.jsonl",
+  "events_sha256": "8a941b5b39703b40e27930f2cd8e22f0c219043617b43107fe9e11e0ddeb1615",
+  "generated_at": "2026-08-23T10:53:25.153942+00:00",
+  "limitations": [
+    "Raw PoolManager events are ingestion evidence, not a Gate 1 result.",
+    "Token metadata, reference prices, LVR labels, and pool-selection rules are not inferred here.",
+    "Hooks with swap-return deltas require hook-aware accounting beyond the default Swap event."
+  ],
+  "name": "unichain-sepolia-sentinel-demo",
+  "observed_pool_count": 1,
+  "observed_pool_ids": [
+    "0xec8d4af3a6dd840e8e50c19ec9953702521b1cdbd64576db6b8c044b1fb027b1"
+  ],
+  "pool_manager": "0x00b036b58a818b1bc34d502d3fe730db729e62ac",
+  "range": {
+    "from_block": 60288898,
+    "from_block_hash": "0x86b35087c6a7346d67ad7f03e29530afb674a92fc385421d138cab1445268c84",
+    "from_block_timestamp": 1787141326,
+    "to_block": 60288917,
+    "to_block_hash": "0x7141af03b9d8641960bffed97786afbd3e15f9eca0abbaef63397ef9e86cb441",
+    "to_block_timestamp": 1787141345
+  },
+  "record_count": 9,
+  "rpc_source": "config:public_rpc_url",
+  "schema": "sentinel.v4-extraction-manifest.v1",
+  "selected_events": [
+    "Initialize",
+    "Swap",
+    "ModifyLiquidity"
+  ],
+  "selected_pool_ids": []
+}

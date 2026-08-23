@@ -1,0 +1,69 @@
+{
+  "chain_id": 130,
+  "config": "research/configs/unichain-mainnet-smoke-2026-08-23.json",
+  "event_counts": {
+    "ModifyLiquidity": 48,
+    "Swap": 254
+  },
+  "events_file": "events.jsonl",
+  "events_sha256": "3386f9aae8ae4013342432f59b4e382900c809741c1003c593090d680655b141",
+  "generated_at": "2026-08-23T10:54:09.872118+00:00",
+  "limitations": [
+    "Raw PoolManager events are ingestion evidence, not a Gate 1 result.",
+    "Token metadata, reference prices, LVR labels, and pool-selection rules are not inferred here.",
+    "Hooks with swap-return deltas require hook-aware accounting beyond the default Swap event."
+  ],
+  "name": "unichain-mainnet-smoke-2026-08-23",
+  "observed_pool_count": 31,
+  "observed_pool_ids": [
+    "0x04a7a357a66b983d6770c1423e12ae16cb4935eac013106d0e309864b269d48e",
+    "0x04b7dd024db64cfbe325191c818266e4776918cd9eaf021c26949a859e654b16",
+    "0x055ac9b9a4ed104d328a9e391b5f78f4c6dbddf8e834dd71e1b0b62c2dee2dc0",
+    "0x05dbb214bd7b9461f9c2f6690b612629b65b9f81d7312fdd3e552d2dda85f771",
+    "0x2289791ab3c4a90c741427c52ea9411ba13bf8184c0b7bae4fea26262f400357",
+    "0x229ef2ccd211bd4ae9405c33a5b18b1a22c0bdee7df8ba1363527db7f8c5f1f9",
+    "0x251ce560e094cec5b562bbe481a8e1d336cfc06551bdcaff025024c1463587dc",
+    "0x3258f413c7a88cda2fa8709a589d221a80f6574f63df5a5b6774485d8acc39d9",
+    "0x410723c1949069324d0f6013dba28829c4a0562f7c81d0f7cb79ded668691e1f",
+    "0x51f9d63dda41107d6513047f7ed18133346ce4f3f4c4faf899151d8939b3496e",
+    "0x52f2afcbab3e6b8d03ada91d44d1bfca656c77ae3a6c26dd164928de53a5ca5a",
+    "0x5cbba0e9f8bfe322fd873263095b31777fad6ae4642310808eff8d5fa9fa9ef9",
+    "0x5d263187a8f9724ffba1b971241ca193b2f8cf5a59acfde1c9ce11d7a43116c2",
+    "0x63817c19483c7c8a7be20248337d91fecbc330653bc347054fbfeb5db1a34640",
+    "0x712bb14f25c5949ed258b55b0b78398fda24d3c1a5a39f339483dc40f0a8312a",
+    "0x75b19237e8069600566be945953c5fd815cdfb26bd3972821d0ae8d6b7d5e51d",
+    "0x764afe9ab22a5c80882918bb4e59b954912b17a22c3524c68a8cf08f7386e08f",
+    "0x9bdd72519ad7e2b5f0d5441d7af389771cc04a8406cd577fac0c68a8b6b396bd",
+    "0xa3851829dd8fd7c336c9049e3f6b2b84581e0958fed5333757c6f9c595f4e4f0",
+    "0xa49f71823e31225c216095e19abab107cdd58656e4717e164e8e0ba14378e62d",
+    "0xaf58ab3ed922b34e94d13e01edf1b4ddbe5d2afbc29abbcef5ef8ff752a1ae5a",
+    "0xb2f3bbaf23e0197ec2e6f9ab730d00aaf26a9119ecd583bbb9ef3146b4afa248",
+    "0xbed85e8e08c0494d070850b24a2bd7de870fd9e7df3227fd7ddf9c713b3e1edb",
+    "0xc4f393785b36430779a93eedd52dd20857a46142bbe48c88d4c655303a53279c",
+    "0xcca661c1f5e59a32778ace0acf727eb01ade17937ea736511466fac9b5c87229",
+    "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d",
+    "0xe17d893a0948c1df86efe6cbaaecc2c2fcdcf693a94a29d5a62027c6591dd288",
+    "0xe468249c67297374eb4fee862be1143c8d5189e685469e40db9df0fc61b46e2a",
+    "0xe56f1855a315fe2984a401b8939e7c1c314070ea637e642acdc7ffed0d36387c",
+    "0xf50b6ea1af4bbd567df2288474a6f8304887715f7522192e55ed5dde7ec7a9c4",
+    "0xf8f3c431413d419f7f4e2c6e58e48ff8ce0dd808664641efbc8259f791dbf84e"
+  ],
+  "pool_manager": "0x1f98400000000000000000000000000000000004",
+  "range": {
+    "from_block": 56732741,
+    "from_block_hash": "0x7e4e5abacbeb9a9d8bf5f91cb07f37dc6504d1c8098e8cb50c77de90b87de909",
+    "from_block_timestamp": 1787481100,
+    "to_block": 56733741,
+    "to_block_hash": "0x895e0c6c464ea41f34b0563651efc3bbff20db63d3c14d4ddf4f62afdb92602c",
+    "to_block_timestamp": 1787482100
+  },
+  "record_count": 302,
+  "rpc_source": "config:public_rpc_url",
+  "schema": "sentinel.v4-extraction-manifest.v1",
+  "selected_events": [
+    "Initialize",
+    "Swap",
+    "ModifyLiquidity"
+  ],
+  "selected_pool_ids": []
+}

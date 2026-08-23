@@ -15,3 +15,7 @@ out/
 
 # Node modules
 node_modules/
+
+# Python research tooling
+__pycache__/
+*.py[cod]

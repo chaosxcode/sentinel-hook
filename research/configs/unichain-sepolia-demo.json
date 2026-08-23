@@ -1,0 +1,18 @@
+{
+  "schema": "sentinel.v4-extract-config.v1",
+  "name": "unichain-sepolia-sentinel-demo",
+  "chain_id": 1301,
+  "rpc_url_env": "UNICHAIN_SEPOLIA_RPC_URL",
+  "rpc_url": "https://sepolia.unichain.org",
+  "pool_manager": "0x00B036B58a818B1BC34d502D3fE730Db729e62AC",
+  "from_block": 60288898,
+  "to_block": 60288917,
+  "chunk_size": 100,
+  "events": [
+    "Initialize",
+    "Swap",
+    "ModifyLiquidity"
+  ],
+  "pool_ids": [],
+  "deployment_source": "https://github.com/Uniswap/v4-subgraph/blob/0c13ab2fbd95306272528ed781511d7e2aa338d3/networks.json"
+}

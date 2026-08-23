@@ -33,3 +33,10 @@ jobs:
         run: |
           forge test -vvv
         id: test
+
+      - name: Test research pipeline
+        run: |
+          python3 -m unittest discover -s research/tests -v
+          python3 -m research.sentinel_data.verify \
+            evidence/data-pipeline/unichain-mainnet-smoke-2026-08-23 \
+            evidence/data-pipeline/unichain-sepolia-demo

@@ -86,6 +86,34 @@ held there by hysteresis until the cooldown lets it ease back to base. Note
 events 2–5: tick moves of ±3–4 keep the *target* elevated while the fee
 climbs — rate limiting and hysteresis behaving exactly as the tests promise.
 
+## Research pipeline — first Weeks 1–2 artifact
+
+The next grant-plan stage is now underway with a dependency-free raw v4 event
+extractor in [`research/`](research/). It verifies the chain and block hashes,
+decodes canonical `Initialize`, `Swap`, and `ModifyLiquidity` events, preserves
+large integers without precision loss, and emits hash-receipted JSONL.
+
+Two fixed, reproducible evidence windows are committed:
+
+| Receipt | Coverage | Result |
+|---|---|---|
+| Unichain mainnet smoke window | 1,001 blocks on the canonical PoolManager | 302 events across 31 pool IDs (254 swaps, 48 liquidity changes) |
+| Sentinel Unichain Sepolia demo | Pool creation through the live fee-ramp demo | 9 events (1 initialize, 1 liquidity change, 7 swaps) |
+
+Run the offline receipt verifier:
+
+```bash
+python3 -m research.sentinel_data.verify \
+  evidence/data-pipeline/unichain-mainnet-smoke-2026-08-23 \
+  evidence/data-pipeline/unichain-sepolia-demo
+```
+
+This is ingestion evidence, **not a Gate 1 pass**. The next increment must
+freeze the three-pool cohort, token metadata, reference-price alignment,
+adverse-selection labels, leakage controls, exclusions, and validation split
+before measuring the pre-registered Gate 1 criteria. See the
+[`research` README](research/README.md) for reproduction commands and limits.
+
 ## Build and test
 
 Built from [Uniswap v4-template](https://github.com/Uniswap/v4-template).
@@ -95,6 +123,7 @@ git clone --recurse-submodules https://github.com/chaosxcode/sentinel-hook
 cd sentinel-hook
 forge build
 forge test -vv
+python3 -m unittest discover -s research/tests -v
 ```
 
 Deploy scripts (`script/00_DeployHook.s.sol` onward) follow the template's
