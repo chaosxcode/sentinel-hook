@@ -1,0 +1,19 @@
+{
+  "schema": "sentinel.v4-extract-config.v1",
+  "name": "unichain-mainnet-cohort-nomination-2026-08-23",
+  "chain_id": 130,
+  "rpc_url_env": "UNICHAIN_MAINNET_RPC_URL",
+  "rpc_url": "https://mainnet.unichain.org",
+  "pool_manager": "0x1F98400000000000000000000000000000000004",
+  "from_block": 56695001,
+  "to_block": 56745000,
+  "chunk_size": 2000,
+  "block_hash_verification": "boundary",
+  "events": [
+    "Initialize",
+    "Swap",
+    "ModifyLiquidity"
+  ],
+  "pool_ids": [],
+  "deployment_source": "https://github.com/Uniswap/v4-subgraph/blob/0c13ab2fbd95306272528ed781511d7e2aa338d3/networks.json"
+}

@@ -94,16 +94,31 @@ def extract(config_path: Path, output_dir: Path) -> dict[str, Any]:
     if len(identities) != len(set(identities)):
         raise RuntimeError("RPC returned duplicate logs")
 
-    receipt_numbers = {from_block, to_block, *(row["block_number"] for row in records)}
+    # Full verification pins every record's block hash plus its timestamp;
+    # boundary verification pins only the window edges so wide windows stay
+    # feasible on public RPCs that reject JSON-RPC batching (sequential
+    # per-block lookups would take hours). The chosen mode is recorded in the
+    # manifest either way, so downstream consumers know exactly what is proven.
+    verification_mode = str(config.get("block_hash_verification", "full"))
+    if verification_mode not in ("full", "boundary"):
+        raise ValueError("block_hash_verification must be 'full' or 'boundary'")
+    receipt_numbers = {from_block, to_block}
+    if verification_mode == "full":
+        receipt_numbers.update(row["block_number"] for row in records)
     blocks = client.get_blocks(receipt_numbers)
-    for record in records:
-        receipt = blocks[record["block_number"]]
-        if record["block_hash"] != receipt.hash:
-            raise RuntimeError(f"block hash mismatch at {receipt.number}; refusing reorg-ambiguous output")
-        record["schema"] = SCHEMA
-        record["chain_id"] = observed_chain_id
-        record["block_timestamp"] = receipt.timestamp
-        record["block_timestamp_iso"] = datetime.fromtimestamp(receipt.timestamp, UTC).isoformat()
+    if verification_mode == "full":
+        for record in records:
+            receipt = blocks[record["block_number"]]
+            if record["block_hash"] != receipt.hash:
+                raise RuntimeError(f"block hash mismatch at {receipt.number}; refusing reorg-ambiguous output")
+            record["schema"] = SCHEMA
+            record["chain_id"] = observed_chain_id
+            record["block_timestamp"] = receipt.timestamp
+            record["block_timestamp_iso"] = datetime.fromtimestamp(receipt.timestamp, UTC).isoformat()
+    else:
+        for record in records:
+            record["schema"] = SCHEMA
+            record["chain_id"] = observed_chain_id
 
     events_content = b"".join(_canonical_line(record) for record in records)
     events_hash = hashlib.sha256(events_content).hexdigest()
@@ -117,6 +132,7 @@ def extract(config_path: Path, output_dir: Path) -> dict[str, Any]:
         "chain_id": observed_chain_id,
         "pool_manager": str(config["pool_manager"]).lower(),
         "rpc_source": rpc_source,
+        "block_hash_verification": verification_mode,
         "range": {
             "from_block": from_block,
             "from_block_hash": blocks[from_block].hash,
@@ -140,6 +156,11 @@ def extract(config_path: Path, output_dir: Path) -> dict[str, Any]:
             "Hooks with swap-return deltas require hook-aware accounting beyond the default Swap event.",
         ],
     }
+    if verification_mode == "boundary":
+        manifest["limitations"] = manifest["limitations"] + [
+            "Boundary-only block-hash verification: per-record block hashes are preserved as reported by the RPC but were not re-checked against headers.",
+            "Per-record block timestamps are omitted in boundary mode; only the window boundary timestamps are pinned.",
+        ]
 
     _write_atomic(output_dir / "events.jsonl", events_content)
     manifest_content = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode("utf-8")

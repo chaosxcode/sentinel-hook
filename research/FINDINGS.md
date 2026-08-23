@@ -1,12 +1,61 @@
 # Sentinel research findings
 
 **Last updated:** 2026-08-23  
-**Current stage:** raw Uniswap v4 event ingestion  
+**Current stage:** Gate 1 preregistration frozen  
 **Gate status:** Gate 1 has not been evaluated
 
 This is a dated, evidence-linked research log for grant reviewers and other
 builders following Sentinel's progress. Findings are separated from hypotheses
 so implementation progress cannot be mistaken for economic validation.
+
+## 2026-08-23 — Gate 1 preregistration checkpoint
+
+The full Gate 1 design is now frozen in
+[`GATE1_PREREG.md`](GATE1_PREREG.md) **before any measurement ran**: core
+cohort, token metadata, reference-price rules, adverse-selection label,
+feature windows, leakage controls, splits, seeds, and reporting commitment.
+
+### What the nomination window showed
+
+A 50,000-block Unichain mainnet window (`56,695,001`–`56,745,000`, ≈ 13.9 h)
+produced a hash-receipted extraction of 46,457 events: 35,139 swaps, 11,316
+liquidity changes, across 128 pool IDs. The frozen selection rule
+(`sentinel-cohort-rule-v1`: rank by swap count, ≥ 500 minimum, resolved pair,
+distinct unordered pairs, top-3 core / next-3 alternates) selected:
+
+| Role | Pool | Pair | Swaps |
+|---|---|---|---:|
+| Core 1 | `0x75b1…e51d` | USDC / SOL | 8,257 |
+| Core 2 | `0xc4f3…79c` | USDC / HYPE | 6,869 |
+| Core 3 | `0x3258…d9` | ETH (native) / USDC | 5,144 |
+| Alt 1–3 | `0x04b7…b16`, `0x51f9…96e`, `0x05db…771` | ETH/USD₮0, ETH/WBTC, WBTC/USD₮0 | 2,247 / 1,647 / 939 |
+
+Token metadata (symbol, decimals) was probed via block-pinned `eth_call` at
+the boundary hash and committed with raw results.
+
+**What we learned (engineering):** public Unichain RPCs cap historical log
+scans near a few thousand blocks per call, so (a) wide extractions must use
+boundary-only block verification — added as an explicit manifest-recorded mode
+rather than silently weakening the smoke receipts' full verification; and (b)
+pool keys cannot be scanned historically or read from state cheaply, so cohort
+currency pairs were resolved on-chain from ERC-20 transfer intersections in
+single-pool swap transactions — a method that also identified native-ETH pairs
+(the only v4 currency without a `Transfer` event). Both methods are frozen in
+the prereg with their compensating controls.
+
+**What this does not establish:** no reference prices were aligned, no labels
+computed, no signal scored. Vanilla-pool status of each core pool is verified
+at first study ingest (prereg §7); any violation swaps in the fixed alternate.
+
+Receipts:
+[`evidence/data-pipeline/unichain-mainnet-cohort-nomination-2026-08-23/`](../evidence/data-pipeline/unichain-mainnet-cohort-nomination-2026-08-23/)
+(`events.jsonl` SHA-256
+`cc092899e62da0a46854b92cd20068c1a43a031ef11927ce5f876c4cebfc4f87`) and
+[`evidence/cohort/unichain-core-v1/`](../evidence/cohort/unichain-core-v1/)
+(`selection_sha256`
+`25f151e523717ad2e35aebe5582b4fcc0fbeb0ba3ff8c42f2ca1c2ca5fac8359`,
+`metadata_sha256`
+`7c60d7b94a15ae636497ed8fdf6d23617172f08481e06853ba57e9d00882de28`).
 
 ## 2026-08-23 — reproducible data-pipeline checkpoint
 
@@ -99,23 +148,17 @@ specific paid provider.
 - Testnet behavior evidence and mainnet economic evidence remain explicitly
   separate.
 
-## Next public checkpoint — Gate 1 preregistration
+## Next public checkpoint — Gate 1 measurement
 
-Before running the larger study, Sentinel will publish and freeze:
+The six preregistration items previously listed here are now **frozen** in
+[`GATE1_PREREG.md`](GATE1_PREREG.md) (2026-08-23). The next checkpoint is the
+Gate 1 measurement itself: ingest the study windows for the three core pools,
+align on-chain reference prices per the frozen rules, compute labels and
+pre-swap features, and publish the pass/fail result — including a failure.
 
-1. At least three named core pools plus inclusion/exclusion rules and a transfer
-   rule for smaller Unichain pilot markets.
-2. Token metadata and unit normalization with source and block provenance.
-3. External reference-price venue(s), timestamp alignment, stale-price rules,
-   and missing-data handling.
-4. The exact adverse-selection/LVR label and pre-swap feature windows.
-5. Leakage controls, parameter-search policy, seeds, exclusions, and the
-   train/validation/locked-holdout split.
-6. A Gate 1 report that publishes the result even if the thesis fails.
-
-Until those items are frozen and run, Sentinel makes **no claim** that current
-LP pain is sufficiently predictable, that the five-signal model works, or that
-dynamic fees improve LP returns.
+Until that report exists, Sentinel makes **no claim** that current LP pain is
+sufficiently predictable, that the five-signal model works, or that dynamic
+fees improve LP returns.
 
 ## Reproduce or verify
 

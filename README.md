@@ -11,9 +11,12 @@ low fees in normal conditions, higher LP compensation when market conditions
 become dangerous. The full research plan, pre-registered gates and budget are
 in the **[grant application](https://chaosxcode.github.io/sentinel-hook/)**.
 
-> **Latest research update — 2026-08-23:** the first raw-data checkpoint is
-> published with measured mainnet observations, exact evidence hashes, honest
-> limitations, and the next Gate 1 preregistration tasks. Read the
+> **Latest research update — 2026-08-23:** the Gate 1 preregistration is now
+> **frozen**: core cohort (USDC/SOL, USDC/HYPE, native ETH/USDC + three
+> hash-receipted alternates), token metadata with block-pinned provenance,
+> reference-price rules, adverse-selection label, leakage controls, splits and
+> seeds — all fixed before any measurement. Read the
+> **[Gate 1 preregistration](research/GATE1_PREREG.md)** and the
 > **[dated findings log](research/FINDINGS.md)**.
 
 ## What this repo is (and deliberately is not)
@@ -93,19 +96,31 @@ held there by hysteresis until the cooldown lets it ease back to base. Note
 events 2–5: tick moves of ±3–4 keep the *target* elevated while the fee
 climbs — rate limiting and hysteresis behaving exactly as the tests promise.
 
-## Research pipeline — first Weeks 1–2 artifact
+## Research pipeline — data ingestion and the frozen Gate 1 design
 
-The next grant-plan stage is now underway with a dependency-free raw v4 event
-extractor in [`research/`](research/). It verifies the chain and block hashes,
-decodes canonical `Initialize`, `Swap`, and `ModifyLiquidity` events, preserves
-large integers without precision loss, and emits hash-receipted JSONL.
+The grant-plan stages completed so far:
 
-Two fixed, reproducible evidence windows are committed:
+1. **Raw v4 event extraction** (`research/sentinel_data/`): dependency-free
+   extractor that verifies chain IDs and block hashes, decodes canonical
+   `Initialize`/`Swap`/`ModifyLiquidity` events, preserves large integers as
+   decimal strings, and emits hash-receipted JSONL. Two fixed evidence windows
+   are committed (mainnet smoke + Sepolia demo).
+2. **Gate 1 preregistration freeze** (`research/GATE1_PREREG.md`): a
+   deterministic selection rule run over a committed 50,000-block Unichain
+   mainnet window froze the core cohort before measurement —
 
-| Receipt | Coverage | Result |
-|---|---|---|
-| Unichain mainnet smoke window | 1,001 blocks on the canonical PoolManager | 302 events across 31 pool IDs (254 swaps, 48 liquidity changes) |
-| Sentinel Unichain Sepolia demo | Pool creation through the live fee-ramp demo | 9 events (1 initialize, 1 liquidity change, 7 swaps) |
+| Role | Pool | Swaps in window |
+|---|---|---:|
+| Core 1 | USDC / SOL | 8,257 |
+| Core 2 | USDC / HYPE | 6,869 |
+| Core 3 | ETH (native) / USDC | 5,144 |
+| Alternates | ETH/USD₮0 · ETH/WBTC · WBTC/USD₮0 | 2,247 / 1,647 / 939 |
+
+Token metadata is block-pinned; currency pairs were resolved on-chain from
+ERC-20 transfer intersections of single-pool swap transactions. The prereg
+also freezes reference-price alignment, the adverse-selection label, feature
+windows, leakage controls, splits, seeds — and commits to publishing Gate 1
+even if the thesis fails.
 
 Run the offline receipt verifier:
 
@@ -115,12 +130,12 @@ python3 -m research.sentinel_data.verify \
   evidence/data-pipeline/unichain-sepolia-demo
 ```
 
-This is ingestion evidence, **not a Gate 1 pass**. The next increment must
-freeze the three-pool cohort, token metadata, reference-price alignment,
-adverse-selection labels, leakage controls, exclusions, and validation split
-before measuring the pre-registered Gate 1 criteria. See the
-[`dated findings`](research/FINDINGS.md) for what this stage taught us and the
-[`research` README](research/README.md) for reproduction commands and limits.
+This is ingestion and design evidence, **not a Gate 1 result**. No reference
+price has been aligned, no label computed, no signal scored — the next
+checkpoint is the Gate 1 measurement itself under the frozen rules. See the
+[`preregistration`](research/GATE1_PREREG.md), the
+[`dated findings`](research/FINDINGS.md), and the
+[`research` README](research/README.md).
 
 ## Build and test
 

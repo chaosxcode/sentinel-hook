@@ -87,6 +87,28 @@ class JsonRpcClient:
     def chain_id(self) -> int:
         return int(self.call("eth_chainId", []), 16)
 
+    def transaction_receipt(self, tx_hash: str) -> dict[str, Any]:
+        receipt = self.call("eth_getTransactionReceipt", [tx_hash])
+        if not isinstance(receipt, dict) or not receipt:
+            raise RpcError(f"transaction {tx_hash} has no receipt")
+        return receipt
+
+    def call_contract(
+        self,
+        *,
+        to: str,
+        data: str,
+        block: str,
+    ) -> str | None:
+        """eth_call against a pinned block identifier (hash or quantity string)."""
+
+        result = self.call("eth_call", [{"to": to, "data": data}, block])
+        if result is None:
+            return None
+        if not isinstance(result, str) or not result.startswith("0x"):
+            raise RpcError(f"eth_call returned a non-hex result for {to}")
+        return result
+
     def get_logs(
         self,
         *,
