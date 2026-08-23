@@ -254,6 +254,43 @@ Static fees had a good run. Times change.
 ```
 `[img]` roadmap graphic
 
+
+
+---
+
+## Batch 3 — the lab (interactive)
+
+### Post 21 — the lab is live (247 chars)
+```
+We built a playground.
+
+Sentinel Lab: replay 25,000 real labeled trades from the ETH/USDC pool through our fee engine. Drag the sliders — sensitivity, cap, base fee, memory — watch LP PnL recompute instantly.
+
+No signup. Just math:
+chaosxcode.github.io/sentinel-hook/lab.html
+```
+`[img]` lab screenshot (simulator section)
+
+### Post 22 — the hook is watching you watch it (250 chars)
+```
+The top of the lab page polls our DEPLOYED SentinelHookV1 contract live through public RPCs.
+
+Current fee. Current volatility EMA. Every FeeUpdated event from the demo, each bar clickable to its transaction.
+
+The chain is the API. No backend. No keys.
+```
+`[img]` live panel screenshot
+
+### Post 23 — break our policy (262 chars)
+```
+Challenge: find parameters where static fees beat us.
+
+The lab lets you tune k, cap, base fee and memory against the same 2.5M-trade dataset we use. In our sweeps, 18/18 configs beat static — but the sample is yours to torture.
+
+If you break it, that's research. Post your sliders.
+```
+`[img]` simulator with extreme params
+
 ## Posting notes
 
 - Posts 5-7 work best as a same-day sequence (problem → concentration → honesty).

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinel Lab — play with the fee engine</title>
+<style>
+:root{--bg:#0b0e14;--panel:#11151f;--line:#232a38;--text:#e7ecf5;--mut:#8b94a7;
+--cyan:#22d3ee;--green:#34d399;--red:#f87171;--violet:#a78bfa;--amber:#fbbf24}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5}
+main{max-width:1100px;margin:0 auto;padding:48px 24px 80px}
+.badge{display:inline-block;background:#16202b;color:var(--cyan);border:1px solid #1d3a44;
+padding:6px 14px;border-radius:999px;font-size:12px;letter-spacing:3px;font-weight:700}
+h1{font-size:44px;font-weight:800;letter-spacing:-1px;margin:16px 0 8px}
+h2{font-size:26px;font-weight:800;margin:56px 0 12px}
+.muted{color:var(--mut)}
+a{color:var(--cyan)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:20px}
+.tiles{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px}
+.tile{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.tile .v{font-size:34px;font-weight:800}
+.tile .l{color:var(--mut);font-size:14px;margin-top:2px}
+.live-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--mut);margin-right:8px}
+.live-dot.on{background:var(--green);box-shadow:0 0 8px var(--green)}
+canvas{width:100%;height:auto;display:block}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:8px}
+.ctrl label{display:flex;justify-content:space-between;font-size:14px;color:var(--mut);margin-bottom:6px}
+.ctrl label b{color:var(--text)}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.status{font-size:13px;color:var(--mut);margin-top:10px}
+.footer{margin-top:64px;border-top:1px solid var(--line);padding-top:20px;color:var(--mut);font-size:14px;
+display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer a{color:var(--mut)}
+code{background:#16202b;padding:2px 6px;border-radius:6px;font-size:13px}
+.note{font-size:13px;color:var(--mut);margin-top:10px}
+</style>
+</head>
+<body>
+<main>
+<span class="badge">SENTINEL LAB</span>
+<h1>Play with the fee engine.</h1>
+<p class="muted">Everything below runs on published artifacts and the live SentinelHookV1 contract on
+Unichain Sepolia. No backend, no keys — the chain is the API.</p>
+
+<h2>1 · The deployed hook, right now</h2>
+<div class="panel">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+<span><span class="live-dot" id="livedot"></span><span id="livestate">loading on-chain state…</span></span>
+<a href="https://sepolia.uniscan.xyz/address/0x290d2d0af6dd11b6e235eac6d7528f5474753080" target="_blank" rel="noopener">SentinelHookV1 ↗</a>
+</div>
+<div class="tiles">
+<div class="tile"><div class="v" id="livefee">—</div><div class="l">current dynamic fee (bps)</div></div>
+<div class="tile"><div class="v" id="liveema">—</div><div class="l">volatility EMA (60s lookback)</div></div>
+<div class="tile"><div class="v" id="liveupdates">72</div><div class="l">FeeUpdated events in demo</div></div>
+</div>
+<canvas id="feechart" width="1040" height="300"></canvas>
+<p class="note" id="livenote">Bars: every <code>FeeUpdated</code> event emitted during the on-chain demo —
+calm start at 5 bps, sustained trend ramps the fee continuously, quiet period decays it back.
+Each bar links to its transaction on Uniscan.</p>
+</div>
+
+<h2>2 · The simulator — replay real labeled trades</h2>
+<div class="panel">
+<p class="muted" style="margin-bottom:12px">25,309 labeled trades from the native ETH/USDC pool (systematic
+1-in-100 sample of the 2.53M-trade validation set, Feb–Dec 2025). Drag the policy parameters — the replay
+re-runs instantly against <b>the same trades</b>, so you can hunt for the configuration you would have shipped.</p>
+<div class="controls">
+<div class="ctrl"><label>sensitivity k <b id="kv">4.0</b></label>
+<input type="range" id="k" min="5" max="100" value="40"></div>
+<div class="ctrl"><label>fee cap <b id="capv">100 bps</b></label>
+<input type="range" id="cap" min="10" max="300" value="100"></div>
+<div class="ctrl"><label>base fee <b id="basev">5 bps</b></label>
+<input type="range" id="base" min="1" max="30" value="5"></div>
+<div class="ctrl"><label>EMA half-life <b id="hlv">300 s</b></label>
+<input type="range" id="hl" min="60" max="1800" step="30" value="300"></div>
+</div>
+<div class="tiles">
+<div class="tile"><div class="v" id="m-net" style="color:var(--green)">—</div><div class="l">LP net, dynamic policy</div></div>
+<div class="tile"><div class="v" id="m-static" style="color:var(--mut)">—</div><div class="l">LP net, static base fee</div></div>
+<div class="tile"><div class="v" id="m-delta">—</div><div class="l">improvement vs static</div></div>
+<div class="tile"><div class="v" id="m-prec">—</div><div class="l">precision (uplift on toxic trades)</div></div>
+<div class="tile"><div class="v" id="m-burden">—</div><div class="l">avg trader burden (bps)</div></div>
+</div>
+<canvas id="simchart" width="1040" height="340"></canvas>
+<p class="note" id="simstatus">loading trade sample…</p>
+</div>
+
+<h2>3 · Where the numbers come from</h2>
+<div class="panel">
+<p class="muted">Gate 1 preregistration, the published failure, signal validation, and every calibration
+sweep are committed artifacts:</p>
+<p style="margin-top:12px">
+<a href="https://github.com/chaosxcode/sentinel-hook/blob/main/research/GATE1_PREREG.md">preregistration</a> ·
+<a href="https://github.com/chaosxcode/sentinel-hook/blob/main/research/FINDINGS.md">research log</a> ·
+<a href="https://github.com/chaosxcode/sentinel-hook/blob/main/evidence/gate1/calibration-vol-fee.json">calibration sweep</a> ·
+<a href="https://github.com/chaosxcode/sentinel-hook/blob/main/src/SentinelHookV1.sol">SentinelHookV1.sol</a>
+</p>
+<p class="note">Simulator caveat: the browser replay uses the downsampled trade sample, so its numbers
+approximate — the exact figures we report come from the full 2.53M-trade artifacts linked above. Final
+performance claims are reserved for the untouched holdout period, evaluated exactly once.</p>
+</div>
+
+<div class="footer">
+<span>Sentinel // adverse-selection-aware fees for Uniswap v4</span>
+<span><a href="index.html">← grant application</a> · <a href="https://github.com/chaosxcode/sentinel-hook">github</a></span>
+</div>
+</main>
+
+<script>
+// ---------- shared helpers ----------
+const $ = id => document.getElementById(id);
+const fmtUsd = v => (v<0?"-$":"$") + Math.abs(v).toLocaleString("en-US",{maximumFractionDigits:0});
+const fmtBps = v => v.toFixed(2);
+
+// ---------- section 1: hook state + FeeUpdated history ----------
+const HOOK="0x290d2d0af6dd11b6e235eac6d7528f5474753080";
+const POOL="0x585a22c80ab10732e362ab61c7b028e0016bcf44f3fb1f04b08b509abb36af2d";
+const FEE_SEL="0x9c1f9c03", EMA_SEL="0x5dad2d41";
+const RPCS=["https://unichain-sepolia.drpc.org","https://sepolia.unichain.org","https://1rpc.io/unichain-sepolia"];
+
+async function tryRpc(method,params){
+  for(const url of RPCS){
+    try{
+      const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({jsonrpc:"2.0",id:1,method,params})});
+      if(!r.ok) continue;
+      const j=await r.json();
+      if(j && j.result!==undefined) return j.result;
+    }catch(e){/* try next */}
+  }
+  throw new Error("all public endpoints unreachable");
+}
+
+function drawFeeChart(events){
+  const c=$("feechart"), ctx=c.getContext("2d");
+  const W=c.width, H=c.height, pad=44, bw=(W-pad*2)/events.length;
+  ctx.clearRect(0,0,W,H);
+  const maxV=Math.max(...events.map(e=>e.new))*1.1;
+  events.forEach((e,i)=>{
+    const h=Math.max(2,(e.new/maxV)*(H-pad*2));
+    ctx.fillStyle=e.new>=5000?"#34d399":"#22d3ee";
+    ctx.fillRect(pad+i*bw, H-pad-h, Math.max(1,bw-1.5), h);
+  });
+  ctx.strokeStyle="#232a38";ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+  ctx.fillStyle="#8b94a7";ctx.font="16px Inter";
+  ctx.fillText("0",pad-24,H-pad+6);ctx.fillText(Math.round(maxV),pad-40,34);
+  ctx.fillText("demo time →",W-150,H-12);
+}
+
+fetch("lab-data/hook-snapshot.json").then(r=>r.json()).then(snap=>{
+  $("liveupdates").textContent=snap.feeUpdatedCount;
+  $("livefee").textContent=snap.finalFee;
+  drawFeeChart(snap.events);
+  // make bars clickable → uniscan tx
+  const c=$("feechart");
+  c.style.cursor="pointer";
+  c.addEventListener("click",ev=>{
+    const rect=c.getBoundingClientRect();
+    const i=Math.floor((ev.clientX-rect.left)*(c.width/rect.width)-44)/((c.width-88)/snap.events.length);
+    const e=snap.events[Math.max(0,Math.min(snap.events.length-1,Math.floor(i)))];
+    if(e) window.open("https://sepolia.uniscan.xyz/tx/"+e.tx,"_blank");
+  });
+  // live polling with graceful fallback
+  async function poll(){
+    try{
+      const fee=await tryRpc("eth_call",[{to:HOOK,data:FEE_SEL+POOL.slice(2)},"latest"]);
+      const ema=await tryRpc("eth_call",[{to:HOOK,data:EMA_SEL+POOL.slice(2)},"latest"]);
+      $("livefee").textContent=int(BigInt(fee));
+      $("liveema").textContent=(Number(BigInt(ema))/1e18).toFixed(6);
+      $("livedot").classList.add("on");
+      $("livestate").textContent="LIVE — polling SentinelHookV1 via public RPC";
+      $("livenote").textContent="Live state polled from public Unichain Sepolia RPCs. Bars: every FeeUpdated event from the on-chain demo — click a bar to open its transaction on Uniscan.";
+    }catch(e){
+      $("livestate").textContent="snapshot mode — public RPCs unreachable from this network (state below is from the committed on-chain receipts)";
+    }
+  }
+  function int(b){return Number(b)}
+  poll(); setInterval(poll,15000);
+});
+
+// ---------- section 2: simulator ----------
+let TRADES=null, T0=0;
+const SIM={k:4.0,cap:100,base:5,hl:300};
+
+fetch("lab-data/m2-trades-sample.json").then(r=>r.json()).then(d=>{
+  TRADES=d.trades; T0=d.t0;
+  $("simstatus").textContent=`loaded ${TRADES.length.toLocaleString()} trades · ${d.meta.period} · ${d.meta.source}`;
+  runSim();
+});
+["k","cap","base","hl"].forEach(id=>$(id).addEventListener("input",()=>{
+  SIM.k=+$("k").value/10; SIM.cap=+$("cap").value; SIM.base=+$("base").value; SIM.hl=+$("hl").value;
+  $("kv").textContent=SIM.k.toFixed(1); $("capv").textContent=SIM.cap+" bps";
+  $("basev").textContent=SIM.base+" bps"; $("hlv").textContent=SIM.hl+" s";
+  if(TRADES) runSim();
+}));
+
+function runSim(){
+  const lam=Math.log(2)/SIM.hl;
+  // pass 1: ema levels for threshold-free continuous policy (no threshold needed)
+  let ema=0, prevDay=null, prevT=null;
+  const fees=[], statics=[], cumD=[], cumS=[];
+  let fD=0,fS=0,as=0,nt=0,upT=0,upC=0;
+  let dD=0,dS=0,seen=0;
+  for(const [dt,notional,cost] of TRADES){
+    const t=T0+dt;
+    const day=Math.floor(t/86400);
+    if(day!==prevDay){ ema=0; prevT=null; prevDay=day; }
+    if(prevT!==null) ema*=Math.exp(-lam*(t-prevT));
+    prevT=t;
+    const feeBps=Math.min(Math.max(SIM.k*ema*1e4,SIM.base),SIM.cap);
+    const f=feeBps/1e4*notional, fs=SIM.base/1e4*notional;
+    fD+=f; fS+=fs; as+=cost; nt+=notional;
+    const up=f-fs;
+    if(cost>0) upT+=up; else upC+=up;
+    dD+=f; dS+=fs;
+    seen++;
+    if(seen%37===0){ cumD.push(dD-as); cumS.push(dS-as); }
+    const rate=notional>0?Math.abs(cost)/notional:0;
+    ema+=(1-Math.exp(-lam))*(rate-ema);
+  }
+  // metrics
+  $("m-net").textContent=fmtUsd(fD-as);
+  $("m-static").textContent=fmtUsd(fS-as);
+  const delta=(fD-as)-(fS-as);
+  $("m-delta").textContent=(delta>=0?"+":"-")+fmtUsd(Math.abs(delta)).slice(0);
+  $("m-delta").style.color=delta>=0?"var(--green)":"var(--red)";
+  $("m-prec").textContent=(fD-fS)>0?((upT/(fD-fS))*100).toFixed(0)+"%":"—";
+  $("m-burden").textContent=((fD-fS)/nt*1e4).toFixed(2);
+  drawSim(cumD,cumS);
+}
+
+function drawSim(cumD,cumS){
+  const c=$("simchart"), ctx=c.getContext("2d");
+  const W=c.width,H=c.height,pad=52;
+  ctx.clearRect(0,0,W,H);
+  const all=cumD.concat(cumS).filter(v=>isFinite(v));
+  if(all.length<2) return;
+  let mn=Math.min(...all), mx=Math.max(...all);
+  if(mx===mn){mx=mn+1}
+  const pad2=(mx-mn)*0.08; mn-=pad2; mx+=pad2;
+  const X=i=>pad+(i/(cumD.length-1))*(W-pad*2);
+  const Y=v=>H-pad-((v-mn)/(mx-mn))*(H-pad*2);
+  // zero line
+  ctx.strokeStyle="#232a38";ctx.beginPath();ctx.moveTo(pad,Y(0));ctx.lineTo(W-pad,Y(0));ctx.stroke();
+  ctx.fillStyle="#8b94a7";ctx.font="15px Inter";ctx.fillText("0",pad-30,Y(0)+5);
+  // static line
+  ctx.strokeStyle="#8b94a7";ctx.setLineDash([6,6]);ctx.beginPath();
+  cumS.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));ctx.stroke();ctx.setLineDash([]);
+  // dynamic line
+  ctx.strokeStyle="#34d399";ctx.lineWidth=3;ctx.beginPath();
+  cumD.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));ctx.stroke();ctx.lineWidth=1;
+  ctx.fillStyle="#8b94a7";
+  ctx.fillText("cumulative LP net — sampled trades, chronological →",pad,H-12);
+  ctx.fillStyle="#34d399";ctx.fillText(fmtUsd(mx),8,40);
+  ctx.fillStyle="#8b94a7";ctx.fillText(fmtUsd(mn),8,H-pad+4);
+}
+</script>
+</body>
+</html>
