@@ -24,7 +24,7 @@ contract BaseScript is Script, Deployers {
     /////////////////////////////////////
     IERC20 internal constant token0 = IERC20(0x345A187ace5808B0F7030d82cB2b444AcDa8Af1C); // Sentinel Test Alpha (Unichain Sepolia)
     IERC20 internal constant token1 = IERC20(0x52611F5C1e35E3213E5155483311A2C9Ab310138); // Sentinel Test Beta (Unichain Sepolia)
-    IHooks constant hookContract = IHooks(0xCbD5bAc7B96770d7f18b97D05d6518A4D0913080); // SentinelHookV0 (Unichain Sepolia)
+    IHooks immutable hookContract; // SentinelHookV0 by default; set SENTINEL_HOOK_ADDRESS to bind another (e.g. V1)
     /////////////////////////////////////
 
     Currency immutable currency0;
@@ -46,6 +46,7 @@ contract BaseScript is Script, Deployers {
         vm.label(address(token0), "Currency0");
         vm.label(address(token1), "Currency1");
 
+        hookContract = IHooks(vm.envOr("SENTINEL_HOOK_ADDRESS", 0xCbD5bAc7B96770d7f18b97D05d6518A4D0913080));
         vm.label(address(hookContract), "HookContract");
     }
 
