@@ -11,6 +11,11 @@ low fees in normal conditions, higher LP compensation when market conditions
 become dangerous. Every claim in this repo traces to committed, hash-receipted
 evidence.
 
+**Quick links:** [interactive lab](https://chaosxcode.github.io/sentinel-hook/lab.html) ·
+[findings (visual)](https://chaosxcode.github.io/sentinel-hook/findings.html) ·
+[holdout results](evidence/gate2/gate2-evaluation-results.json) ·
+[security dossier](docs/SECURITY.md)
+
 > **Status (2026-08-23):** the full research arc is complete. Gate 1 failed
 > trade-level predictability — published as committed. The post-mortem found
 > loss clustering (ρ = 0.61), Sentinel **v2** was rebuilt around it, and the
