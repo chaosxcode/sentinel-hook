@@ -1,0 +1,82 @@
+{
+  "bars": {
+    "P1_pass": true,
+    "P2_month_positivity": "8/8",
+    "P2_pass": true,
+    "P3_pass": true,
+    "gate2_pass": true
+  },
+  "diagnostics": {
+    "days_processed": 330,
+    "empty_days": 0
+  },
+  "per_role": {
+    "M1_usdc_hype": {
+      "active_months": 5,
+      "as_total": 136.6,
+      "bootstrap": {
+        "ci_high": 21.4681,
+        "ci_low": 11.6722,
+        "excludes_zero": true,
+        "mean_uplift_bps": 16.9433,
+        "n_clusters": 51,
+        "n_trades": 93648.0,
+        "se": 0.0444
+      },
+      "burden_bps": 19.627,
+      "coverage": 4.4071,
+      "delta_net": 602.03,
+      "net_dynamic": 618.8,
+      "net_static": 16.77,
+      "notional": 306737.95,
+      "positive_month_share": 1.0,
+      "precision": 0.5582,
+      "trades": 93648
+    },
+    "M2_eth_usdc": {
+      "active_months": 8,
+      "as_total": 132219.79,
+      "bootstrap": {
+        "ci_high": 12.2685,
+        "ci_low": 6.9967,
+        "excludes_zero": true,
+        "mean_uplift_bps": 9.4377,
+        "n_clusters": 110,
+        "n_trades": 1150025.0,
+        "se": 0.0098
+      },
+      "burden_bps": 9.529,
+      "coverage": 2.764,
+      "delta_net": 365452.51,
+      "net_dynamic": 425000.58,
+      "net_static": 59548.07,
+      "notional": 383535717.85,
+      "positive_month_share": 1.0,
+      "precision": 0.6483,
+      "trades": 1150025
+    }
+  },
+  "plan_sha256": "21d2e6e1fbde3f19f5fbe272655202e64b1814e2f5cebf0f29b48c0f61002f5e",
+  "policy": {
+    "base_bps": 5.0,
+    "cap_bps": 100.0,
+    "half_life_seconds": 300.0,
+    "k": 4.0,
+    "lookback_seconds": 60.0
+  },
+  "pooled": {
+    "as_total": 132356.39,
+    "bootstrap": {
+      "ci_high": 12.6103,
+      "ci_low": 7.7396,
+      "excludes_zero": true,
+      "mean_uplift_bps": 10.0029,
+      "n_clusters": 161,
+      "n_trades": 1243673.0,
+      "se": 0.0098
+    },
+    "burden_bps": 9.537,
+    "delta_net": 366054.54,
+    "recapture_ratio": 2.7657
+  }
+}

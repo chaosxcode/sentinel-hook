@@ -1,12 +1,52 @@
 # Sentinel research findings
 
 **Last updated:** 2026-08-23  
-**Current stage:** Sentinel v2 built — deployable signal validated, contract tested  
-**Gate status:** Gate 1 **FAILED** criterion 3 (predictability); v2 development evidence strong; holdout untouched
+**Current stage:** Sentinel v2 **passed its pre-registered holdout evaluation** (Gate 2, P1–P3)  
+**Gate status:** Gate 1 failed (published) → v2 rebuilt → **holdout PASS** → production-pilot design next
 
 This is a dated, evidence-linked research log for grant reviewers and other
 builders following Sentinel's progress. Findings are separated from hypotheses
 so implementation progress cannot be mistaken for economic validation.
+
+## 2026-08-23 — Gate 2 holdout result: PASS (all three bars)
+
+Sentinel v2 was evaluated exactly once on the locked holdout (Jan–Jul 2026)
+under [`V2_PREREG.md`](V2_PREREG.md), frozen before ingestion. **All three
+pre-registered bars passed.** Plan SHA-256 `21d2e6e1…002f5e`; 110 sampled
+day-windows ingested with zero failures; 1,243,673 labeled trades across 161
+pool-day clusters.
+
+| Bar | Requirement | Measured | Verdict |
+|---|---|---|---|
+| P1 | pooled ΔNet > 0, clustered-bootstrap 95% CI excludes 0 | **ΔNet +$366,054**; mean uplift 10.00 bps, CI [7.74, 12.61] | **PASS** |
+| P2 | ΔNet > 0 in ≥60% of active pool-months and ≥1 pool | **8/8 pool-months positive**; M2 +$365,453 and M1 +$602 both positive | **PASS** |
+| P3 | trader burden ≤ 12 bps | **9.54 bps** | **PASS** |
+
+Per-pool diagnostics: M2 (native ETH/USDC) precision 0.65, toxic-loss
+coverage 2.76×; M1 (USDC/HYPE) precision 0.56, coverage 4.41×. Pooled
+recapture ratio 2.77× — the policy collected 2.77× the adverse-selection
+losses it measured, at 9.5 bps average trader burden.
+
+### Honest reading (stated plainly)
+
+- P1 is close to mechanical in a fixed-trade replay: the dynamic fee is
+  never below base, so uplift cannot be negative. The informative bars are
+  P3 (burden stayed inside the pre-committed bound) and the diagnostics
+  (two-thirds of fee uplift landed on genuinely toxic trades; coverage
+  exceeded ongoing losses during elevated windows).
+- The replay holds trade sizes fixed — real volume elasticity is unmodeled
+  and cuts in both directions (disclosed in V2_PREREG §6).
+- Holdout-period adverse selection ($132k on sampled days) was much milder
+  than the validation year ($8.1M) — the policy passed in a *calmer*
+  market than the one that motivated it.
+
+### Consequence
+
+Per V2_PREREG §5: the result supports a production-pilot proposal — Gate 3
+security work (extended fuzzing, independent review) and a mainnet-pilot
+design. It does not by itself justify mainnet capital.
+
+Full results: [`evidence/gate2/gate2-evaluation-results.json`](../evidence/gate2/gate2-evaluation-results.json).
 
 ## 2026-08-23 — Sentinel v2: deployable signal found, calibrated, and shipped
 

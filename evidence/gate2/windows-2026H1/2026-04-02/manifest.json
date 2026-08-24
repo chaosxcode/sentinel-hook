@@ -1,0 +1,52 @@
+{
+  "anchor_stride_blocks": 900,
+  "chain_id": 130,
+  "day": "2026-04-02",
+  "dense_refetched_segments": [],
+  "distinct_event_blocks": 18223,
+  "event_counts": {
+    "Swap": 45326
+  },
+  "events_file": "events.jsonl.gz",
+  "events_sha256": "3b5719cba32f4eb18c4af27c14a433ce8aa46d760d2b07e7c006756be9810ae2",
+  "generated_at": "2026-08-24T00:24:56.963152+00:00",
+  "header_rpc_source": "header_rpc",
+  "max_probe_residual_seconds": 0.0,
+  "name": "gate1-unichain-core-v1-gate1-plan-2026-2026-04-02",
+  "plan_sha256": "21d2e6e1fbde3f19f5fbe272655202e64b1814e2f5cebf0f29b48c0f61002f5e",
+  "pool_manager": "0x1f98400000000000000000000000000000000004",
+  "probe_residuals_seconds": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "range": {
+    "from_block": 44339641,
+    "from_block_hash": "0x6e3e9803b78dc58a5c82c074beeea8635c7c2ff5902a65519fa36a30f05e9aea",
+    "from_block_timestamp": 1775088000,
+    "to_block": 44426040
+  },
+  "record_count": 45326,
+  "scanned_pool_ids": [
+    "0x04b7dd024db64cfbe325191c818266e4776918cd9eaf021c26949a859e654b16",
+    "0x2289791ab3c4a90c741427c52ea9411ba13bf8184c0b7bae4fea26262f400357",
+    "0x25939956ef14a098d95051d86c75890cfd623a9eeba055e46d8dd9135980b37c",
+    "0x3258f413c7a88cda2fa8709a589d221a80f6574f63df5a5b6774485d8acc39d9",
+    "0x9bdd72519ad7e2b5f0d5441d7af389771cc04a8406cd577fac0c68a8b6b396bd",
+    "0xb25519988d42778f3ae75636bb92925597c0c99ce050a0b178a40e54ded540d7",
+    "0xc4f393785b36430779a93eedd52dd20857a46142bbe48c88d4c655303a53279c"
+  ],
+  "schema": "sentinel.gate1-window-manifest.v1",
+  "verification": "anchor-verified"
+}

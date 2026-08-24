@@ -11,14 +11,13 @@ low fees in normal conditions, higher LP compensation when market conditions
 become dangerous. Every claim in this repo traces to committed, hash-receipted
 evidence.
 
-> **Status (2026-08-23):** Gate 1 was measured against its pre-registered bars
-> and **failed criterion 3** (trade-level predictability) — published in full,
-> as committed. The post-mortem found where the signal actually lives
-> (**window-level loss persistence, ρ = 0.61**), and Sentinel **v2** was rebuilt
-> around it: a deployable self-contained signal, calibrated fee policy that
-> **beat static fees in 18/18 out-of-sample configurations**, and a working
-> contract (`SentinelHookV1`) at **~14k gas overhead**. Final proof is reserved
-> for the untouched holdout.
+> **Status (2026-08-23):** the full research arc is complete. Gate 1 failed
+> trade-level predictability — published as committed. The post-mortem found
+> loss clustering (ρ = 0.61), Sentinel **v2** was rebuilt around it, and the
+> **locked holdout evaluation passed all three pre-registered bars**: ΔNet
+> **+$366k** vs static (bootstrap CI [7.7, 12.6] bps, excludes zero), 8/8
+> pool-months positive, burden 9.5 bps ≤ 12. Live on Unichain Sepolia at
+> **14k gas overhead** with an interactive lab.
 >
 > Read the **[Gate 1 report](research/FINDINGS.md)** ·
 > **[preregistration](research/GATE1_PREREG.md)** ·
