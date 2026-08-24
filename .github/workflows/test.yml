@@ -29,14 +29,26 @@ jobs:
           forge build --sizes
         id: build
 
-      - name: Test
+      - name: Test (Solidity)
         run: |
           forge test -vvv
         id: test
 
+      - name: Gate 3 — stateful campaign smoke (500 steps)
+        run: |
+          SENTINEL_GATE3_STEPS=500 forge test --match-test test_StatefulCampaign100k
+
+      - name: Gate 3 — manipulation suite
+        run: |
+          forge test --match-contract Gate3AttackSuiteTest
+
       - name: Test research pipeline
         run: |
           python3 -m unittest discover -s research/tests -v
+
+      - name: Verify committed evidence receipts
+        run: |
           python3 -m research.sentinel_data.verify \
             evidence/data-pipeline/unichain-mainnet-smoke-2026-08-23 \
-            evidence/data-pipeline/unichain-sepolia-demo
+            evidence/data-pipeline/unichain-sepolia-demo \
+            evidence/data-pipeline/unichain-mainnet-cohort-nomination-2026-08-23

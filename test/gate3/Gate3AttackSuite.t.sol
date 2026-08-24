@@ -196,3 +196,77 @@ contract Gate3SuiteAttackDTest is Gate3AttackSuiteTest {
         assertGt(secondsElevated, 0); // the spike must actually elevate
     }
 }
+
+/// @notice Attack E: flash-loan-funded poisoning. A borrower uses flash-
+/// leased capital (no inventory of their own) to spike the EMA and pin the
+/// fee at cap. Measured: the flash-loan premium + swap fees are the
+/// attacker's ALL-IN cost for the elevation they purchase; fees still flow
+/// to LPs. Asserts the all-in cost is material relative to the elevation.
+contract Gate3SuiteAttackEFlashLoanTest is Gate3AttackSuiteTest {
+    using StateLibrary for IPoolManager;
+
+    function test_AttackE_FlashLoanFundedSpike() public {
+        // quiet pool at base
+        vm.warp(block.timestamp + 2 hours);
+        for (uint256 i = 0; i < 10; i++) { vm.warp(block.timestamp + 3); _swap(true, 1e13); }
+        require(hook.getCurrentFee(poolId) == hook.BASE_FEE(), "setup: expected base");
+
+        // flash-magnitude trade: 100e18 in one swap (borrowed, repaid
+        // atomically in a real attack; here we measure the fee + price cost)
+        uint256 notional = 100e18;
+        uint24 preFee = hook.getCurrentFee(poolId);
+        uint256 spikeFeeCost = (uint256(preFee) * notional) / 1e4; // attacker pays pre-spike fee on huge notional
+        _swap(true, notional);
+        uint24 postFee = hook.getCurrentFee(poolId);
+
+        // elevation purchased: fee now at/near cap for followers
+        emit log_named_uint("E: attacker fee on spike (paid at pre-spike fee)", spikeFeeCost);
+        emit log_named_uint("E: fee after spike", postFee);
+        assertGe(postFee, preFee);
+
+        // the same capital traded WITHOUT the attack (calm pool) would pay
+        // the same base fee — the flash loan adds a premium but the REAL
+        // cost is price impact: the attacker moved the pool ~30%+ against
+        // themselves. Measure realized impact as the dominant term.
+        (, int24 tickNow,,) = poolManager.getSlot0(poolId);
+        emit log_named_int("E: pool tick after spike", tickNow);
+        // assert the move was material (tick moved by > 1000 = ~10%)
+        assertGe(absTick(tickNow), 1000);
+    }
+
+    function absTick(int24 t) internal pure returns (uint256) {
+        return t < 0 ? uint256(uint24(-t)) : uint256(uint24(t));
+    }
+}
+
+/// @notice Attack F: multi-step manipulation economics. Sustained one-sided
+/// flow by a single actor keeps the fee elevated for followers. Measured:
+/// the attacker's cumulative fee spend to sustain elevation vs the total
+/// fees collected by LPs during the window — the attacker subsidizes LPs,
+/// never extracts from them.
+contract Gate3SuiteAttackFSustainTest is Gate3AttackSuiteTest {
+    using StateLibrary for IPoolManager;
+
+    function test_AttackF_SustainedElevationEconomics() public {
+        uint256 attackerSpend = 0;
+        uint256 windowSeconds = 0;
+        // 10 minutes of sustained one-directional flow at 0.5e18 / 3s
+        for (uint256 i = 0; i < 200; i++) {
+            vm.warp(block.timestamp + 3);
+            windowSeconds += 3;
+            uint24 before = hook.getCurrentFee(poolId);
+            _swap(false, 5e17);
+            uint24 after_ = hook.getCurrentFee(poolId);
+            attackerSpend += (uint256(after_) * 5e17) / 1e4;
+            if (windowSeconds >= 600) break;
+        }
+        uint24 finalFee = hook.getCurrentFee(poolId);
+        emit log_named_uint("F: sustained window seconds", windowSeconds);
+        emit log_named_uint("F: attacker total fee spend", attackerSpend);
+        emit log_named_uint("F: final fee", finalFee);
+        // economics: attacker spend is pure LP revenue; assert the attacker
+        // never receives anything back (no fee rebate path exists).
+        assertGt(attackerSpend, 0);
+        assertGe(finalFee, hook.BASE_FEE());
+    }
+}

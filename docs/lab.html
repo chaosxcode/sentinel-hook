@@ -28,6 +28,8 @@ canvas{width:100%;height:auto;display:block}
 .ctrl label{display:flex;justify-content:space-between;font-size:14px;color:var(--mut);margin-bottom:6px}
 .ctrl label b{color:var(--text)}
 input[type=range]{width:100%;accent-color:var(--cyan)}
+.pbtn{background:var(--panel);color:var(--mut);border:1px solid var(--line);border-radius:10px;padding:10px 18px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.pbtn.active{color:var(--cyan);border-color:var(--cyan)}
 .status{font-size:13px;color:var(--mut);margin-top:10px}
 .footer{margin-top:64px;border-top:1px solid var(--line);padding-top:20px;color:var(--mut);font-size:14px;
 display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
@@ -62,9 +64,11 @@ Each bar links to its transaction on Uniscan.</p>
 
 <h2>2 · The simulator — replay real labeled trades</h2>
 <div class="panel">
-<p class="muted" style="margin-bottom:12px">25,309 labeled trades from the native ETH/USDC pool (systematic
-1-in-100 sample of the 2.53M-trade validation set, Feb–Dec 2025). Drag the policy parameters — the replay
-re-runs instantly against <b>the same trades</b>, so you can hunt for the configuration you would have shipped.</p>
+<p class="muted" style="margin-bottom:12px" id="simintro"></p>
+<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+<button id="period-val" class="pbtn active">Validation 2025 (Feb–Dec)</button>
+<button id="period-hold" class="pbtn">Holdout 2026 (Jan–Jul) — the exam</button>
+</div>
 <div class="controls">
 <div class="ctrl"><label>sensitivity k <b id="kv">4.0</b></label>
 <input type="range" id="k" min="5" max="100" value="40"></div>
@@ -182,12 +186,32 @@ fetch("lab-data/hook-snapshot.json").then(r=>r.json()).then(snap=>{
 // ---------- section 2: simulator ----------
 let TRADES=null, T0=0;
 const SIM={k:4.0,cap:100,base:5,hl:300};
+const DATASETS={};
+const PERIODS={
+  val:{file:"lab-data/m2-trades-sample.json",label:"validation 2025 (Feb–Dec) · Gate 1 study"},
+  hold:{file:"lab-data/holdout-trades-sample.json",label:"holdout 2026 (Jan–Jul) · the frozen exam"}
+};
+let PERIOD="val";
 
-fetch("lab-data/m2-trades-sample.json").then(r=>r.json()).then(d=>{
-  TRADES=d.trades; T0=d.t0;
-  $("simstatus").textContent=`loaded ${TRADES.length.toLocaleString()} trades · ${d.meta.period} · ${d.meta.source}`;
-  runSim();
-});
+function setPeriod(p){
+  PERIOD=p;
+  $("period-val").classList.toggle("active",p==="val");
+  $("period-hold").classList.toggle("active",p==="hold");
+  const load = DATASETS[p] ? Promise.resolve(DATASETS[p]) : fetch(PERIODS[p].file).then(r=>r.json());
+  load.then(d=>{
+    DATASETS[p]=d;
+    TRADES=d.trades; T0=d.t0;
+    $("simintro").innerHTML = p==="hold"
+      ? `<b>${TRADES.length.toLocaleString()} labeled trades from the holdout exam</b> (native ETH/USDC, Jan–Jul 2026, 1-in-25 sample of 1.24M). This is the period the frozen policy was evaluated on — P1/P2/P3 all passed. Drag the parameters and see how robust that pass really is.`
+      : `${TRADES.length.toLocaleString()} labeled trades from the native ETH/USDC pool (systematic 1-in-100 sample of the 2.53M-trade validation set, Feb–Dec 2025). Drag the policy parameters — the replay re-runs instantly against <b>the same trades</b>.`;
+    $("simstatus").textContent=`loaded ${TRADES.length.toLocaleString()} trades · ${d.meta.period} · ${d.meta.source}`;
+    runSim();
+  });
+}
+$("period-val").addEventListener("click",()=>setPeriod("val"));
+$("period-hold").addEventListener("click",()=>setPeriod("hold"));
+
+setPeriod("val");
 ["k","cap","base","hl"].forEach(id=>$(id).addEventListener("input",()=>{
   SIM.k=+$("k").value/10; SIM.cap=+$("cap").value; SIM.base=+$("base").value; SIM.hl=+$("hl").value;
   $("kv").textContent=SIM.k.toFixed(1); $("capv").textContent=SIM.cap+" bps";

@@ -217,6 +217,9 @@ def main(argv: list[str] | None = None) -> int:
                     {
                         "day_pool": f"{day}_{role}",
                         "month": int(day[:7].split("-")[1]),
+                        "timestamp": row["timestamp"],
+                        "block_number": row["block_number"],
+                        "log_index": row["log_index"],
                         "notional": notional,
                         "cost": row["as_cost_h60"],
                         "fee_bps": fee_bps,
@@ -315,6 +318,13 @@ def main(argv: list[str] | None = None) -> int:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(verdict, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # rows export for the lab simulator (holdout period)
+    rows_path = args.output.parent / "gate2-rows.jsonl"
+    with rows_path.open("w", encoding="utf-8") as handle:
+        for role, rows in role_rows.items():
+            for r in rows:
+                handle.write(json.dumps(r, sort_keys=True) + "\n")
     print(json.dumps(verdict["bars"], indent=2))
     print(json.dumps(verdict["pooled"], indent=2))
     for role, payload in per_role.items():

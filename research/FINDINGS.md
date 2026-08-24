@@ -84,6 +84,14 @@ inside the ≤ 40k Gate 3 budget.
    elevates the fee for followers; the elevation window is bounded (decays
    within the EMA window, measured ≤ 1h under probe flow) and the attacker's
    own cost scales with trade size.
+5. **Flash-loan-funded spike** — a 100e18 borrowed-notional trade moved the
+   pool −13,859 ticks (~25%) paying only the pre-spike base fee (5 units);
+   elevation lands on followers, not the spike itself. The attacker's true
+   cost is the price impact against their own trade — structural, not
+   patchable, and it makes the spike self-taxing at scale.
+6. **Sustained elevation economics** — 10 minutes of one-directional flow
+   (200 swaps) pinned the fee at cap at a measured attacker spend of 90.5
+   token-units; the spend is pure LP revenue (no rebate path exists).
 
 **Pilot package:** invariant/enforcement map for reviewers
 ([`docs/SECURITY.md`](../docs/SECURITY.md)), engagement draft
