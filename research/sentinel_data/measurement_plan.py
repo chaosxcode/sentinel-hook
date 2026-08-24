@@ -285,6 +285,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--year", type=int, default=2025)
+    parser.add_argument("--months", type=int, nargs="*", default=None,
+                        help="calendar months to sample; default = full year")
     parser.add_argument("--cohort", type=Path, required=True)
     parser.add_argument("--venues", type=Path, required=True)
     args = parser.parse_args(argv)
@@ -303,6 +305,7 @@ def main(argv: list[str] | None = None) -> int:
             args.cohort,
             args.venues,
             year=args.year,
+            months=args.months,
         )
     except Exception as exc:  # CLI boundary: concise failure, non-zero exit.
         print(f"plan generation failed: {exc}", file=sys.stderr)
