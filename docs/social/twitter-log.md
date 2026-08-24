@@ -291,6 +291,125 @@ If you break it, that's research. Post your sliders.
 ```
 `[img]` simulator with extreme params
 
+
+
+---
+
+## Batch 4 — the holdout countdown & reveal
+
+### Post 24 — the one-shot protocol (249 chars)
+```
+Most projects test until they pass. We froze the opposite.
+
+Our v2 policy faces 7 months of data it has never seen — Jan-Jul 2026. Parameters locked. One evaluation. Published either way.
+
+The protocol is committed before a single block is queried.
+```
+`[img]` V2_PREREG.md header
+
+### Post 25 — what's frozen (247 chars)
+```
+Everything. That's the point.
+
+• signal: EMA of 60s realized price moves, half-life 300s
+• fee: clamp(4 × signal, 5bps, 100bps)
+• bars: significance, robustness, burden ≤ 12bps
+
+Written down before ingestion. If we change ANYTHING after seeing results, the result is void.
+```
+`[img]` frozen parameters table
+
+### Post 26 — ingestion begins (244 chars)
+```
+The holdout run has started.
+
+110 sampled day-windows of Unichain mainnet, Jan-Jul 2026. Same pipeline that processed 4M events for Gate 1. Same hash receipts. Same zero-tolerance for unverifiable data.
+
+Zero failures so far.
+```
+`[img]` progress log screenshot
+
+### Post 27 — scale (239 chars)
+```
+Final holdout tally:
+
+110 day-windows ingested
+0 failures
+1,243,673 trades labeled
+161 pool-day clusters for the bootstrap
+
+Every block hash pinned. Every file SHA-256 stamped. This is the largest fully-reproducible study we know of at this scale.
+```
+`[img]` ingestion stats
+
+### Post 28 — the bars, plainly (251 chars)
+```
+What would a PASS mean? Three bars, frozen in advance:
+
+P1 — the policy beats static fees, and the margin survives 10,000 clustered bootstrap resamples
+P2 — positive across pool-months, not one lucky month
+P3 — traders aren't overtaxed: burden ≤ 12bps
+
+All three or it fails.
+```
+`[img]` bars table
+
+### Post 29 — the stakes (250 chars)
+```
+What a FAIL means:
+
+We abandon the dynamic-fee approach. No third attempt. The measurement tooling stays public, the negative result gets published, and we move on.
+
+We wrote that commitment down before running. That's what separates research from marketing.
+```
+`[img]` V2_PREREG commitment section
+
+### Post 30 — quiet (233 chars)
+```
+The evaluation is running.
+
+One replay. Frozen parameters. Data the policy has never touched.
+
+Results in the next post. Published whatever they are.
+```
+`[img]` minimal — black screen with "evaluating…"
+
+### Post 31 — THE REVEAL: P1 (254 chars)
+```
+THE HOLDOUT VERDICT: PASS.
+
+P1 — Sentinel v2 beat static fees by +$366,054 net LP on the holdout.
+
+10,000 clustered bootstrap resamples: 95% CI [7.7, 12.6] bps. Zero is nowhere near the interval.
+
+Bar one: cleared.
+```
+`[img]` P1 results table
+
+### Post 32 — THE REVEAL: P2 + P3 (256 chars)
+```
+Bar two: positive in 8 of 8 pool-months. Both pools individually. Not one lucky month — a consistent edge.
+
+Bar three: trader burden 9.5bps, inside our pre-committed 12bps ceiling.
+
+65% of fee uplift landed on genuinely toxic flow. Coverage 2.8×.
+
+All three bars: PASS.
+```
+`[img]` full verdict table
+
+### Post 33 — what now (253 chars)
+```
+The full arc, start to finish:
+
+Pre-registered study → published failure → post-mortem → rebuild → holdout pass.
+
+A Uniswap v4 hook that prices adverse selection, validated on data it never saw, live on testnet at 14k gas.
+
+Next: security review + mainnet pilot design.
+```
+`[img]` hero banner + verdict
+
 ## Posting notes
 
 - Posts 5-7 work best as a same-day sequence (problem → concentration → honesty).
