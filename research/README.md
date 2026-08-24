@@ -60,6 +60,27 @@ The selection rule (`sentinel-cohort-rule-v1`) is embedded in
 `sentinel_data/select_cohort.py` and mirrored in the cohort receipt; the
 preregistration narrative is [`GATE1_PREREG.md`](GATE1_PREREG.md).
 
+## Full labeled-trade archives
+
+The complete per-trade label/feature tables (the exact inputs to every
+reported statistic) are committed compressed:
+
+| Archive | Size | Contents |
+|---|---|---|
+| `evidence/gate2/gate2-rows.jsonl.gz` | 63 MB | 1,243,673 holdout trades (Jan–Jul 2026) |
+| `evidence/gate1/gate1-rows.jsonl.gz.part-00..02` | 262 MB in 3 parts | 2,536,933 validation trades (Feb–Dec 2025) |
+
+Rejoin the split archive:
+
+```bash
+cat evidence/gate1/gate1-rows.jsonl.gz.part-* > gate1-rows.jsonl.gz
+md5sum -c evidence/gate1/parts-manifest.txt
+gunzip -c gate1-rows.jsonl.gz | head   # verify
+```
+
+Integrity: `parts-manifest.txt` carries MD5s of every part and the joined
+file; the holdout results JSON pins its own rows hash.
+
 ## What this does not prove
 
 These receipts prove that Sentinel can reproducibly ingest and decode raw v4
