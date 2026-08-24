@@ -1,4 +1,5 @@
 [profile.default]
+gas_limit = 20_000_000_000  # Gate 3: 100k-step stateful campaign needs ~8e9
 bytecode_hash = "none"
 evm_version = "cancun"
 ffi = true

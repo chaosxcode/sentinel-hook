@@ -410,6 +410,62 @@ Next: security review + mainnet pilot design.
 ```
 `[img]` hero banner + verdict
 
+
+
+---
+
+## Batch 5 — Gate 3 security milestone
+
+### Post 34 — gate 3 security sprint (247 chars)
+```
+Economics validated, we turned to security:
+
+• 100k-step fuzz campaign: zero violations
+• manipulation suite: three attacks, measured, published
+• gas: 14k vs the 40k budget
+• pilot proposal with pre-written exit criteria
+
+The boring parts are the moat.
+```
+`[img]` test suite output
+
+### Post 35 — 100k-step fuzz campaign (252 chars)
+```
+Gate 3 security progress:
+
+100,000 stateful fuzz transitions through the live hook — random directions, sizes, time gaps.
+
+After EVERY step: fee in bounds, rate limit respected, EMA sane, state consistent.
+
+Violations found: ZERO. Every step assertable, every step asserted.
+```
+`[img]` fuzz campaign output
+
+### Post 36 — we measured our own attacks (255 chars)
+```
+We attacked our own hook and published it:
+
+• wait-out dodge: works ONCE (disclosed) — flow re-caps the fee in ≤80 swaps
+• volatility poisoning: costs the attacker 3.29 units per 3 min, pays LPs, zero attacker revenue
+• split-trade dodge: NOT cheaper
+
+Receipts in the repo.
+```
+`[img]` attack suite results
+
+### Post 37 — the pilot proposal exists (250 chars)
+```
+Sentinel now has a mainnet pilot proposal:
+
+• target: one flagship v4 pool, capped liquidity
+• expectation set by holdout data, not hope
+• exit criteria pre-written
+• independent security review before any real capital
+
+Chains, LP funds, MMs — the one-pager is in the repo.
+```
+`[img]` PILOT_PROPOSAL.md header
+
 ## Posting notes
 
 - Posts 5-7 work best as a same-day sequence (problem → concentration → honesty).

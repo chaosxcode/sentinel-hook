@@ -1,7 +1,7 @@
 # Sentinel research findings
 
 **Last updated:** 2026-08-23  
-**Current stage:** Sentinel v2 **passed its pre-registered holdout evaluation** (Gate 2, P1–P3)  
+**Current stage:** Gate 2 holdout PASS + Gate 3 engineering package complete (fuzz/attacks/gas); independent review pending  
 **Gate status:** Gate 1 failed (published) → v2 rebuilt → **holdout PASS** → production-pilot design next
 
 This is a dated, evidence-linked research log for grant reviewers and other
@@ -47,6 +47,52 @@ security work (extended fuzzing, independent review) and a mainnet-pilot
 design. It does not by itself justify mainnet capital.
 
 Full results: [`evidence/gate2/gate2-evaluation-results.json`](../evidence/gate2/gate2-evaluation-results.json).
+
+## 2026-08-23 — Gate 3 engineering package: fuzz campaign, attack suite, gas
+
+With the Gate 2 economics validated, the security engineering half of Gate 3
+is complete (independent review remains external and pending):
+
+**Stateful fuzz campaign — 100,000 transitions, zero violations.**
+One persistent pool driven by 100,000 seeded stateful transitions (random
+direction with mean-reversion bias, sizes 1e12–6e18, time gaps 1s–1h).
+After every transition the full invariant set was asserted: fee within
+[5bps, 100bps], per-update step ≤ 0.05%, EMA within [0, 1], state
+consistency. Result: **zero violations** (`test/gate3/Gate3StatefulFuzz.t.sol`,
+run with `SENTINEL_GATE3_STEPS=100000 --gas-limit 2e10`).
+
+**Manipulation suite — measured, with disclosed residuals**
+(`test/gate3/Gate3AttackSuite.t.sol`):
+
+- **Wait-out fee dodge** (idle past decay, then trade toxic): works once —
+  the first trade after a quiet period always pays base (structural to any
+  pre-swap signal, disclosed since V0). Measured re-elevation: sustained
+  toxic flow re-caps the fee within ≤ 80 subsequent swaps.
+- **Volatility poisoning** (oscillating large swaps to pin the fee high):
+  mechanically sustains an elevated fee (measured 2127 after a 180s window)
+  but the attacker pays their own fees on every poison swap (~3.29 token
+  units per 180s window) and fees flow to LPs, not the attacker — pure
+  attacker cost, LP revenue.
+- **Split-trade dodge** (dusting a large trade across updates): NOT cheaper —
+  the rate limiter holds the fee near cap, so split execution paid ≥ 90% of
+  the single-trade fee.
+
+**Gas:** swap-path overhead measured vs a no-hook pool: 13.9–14.7k,
+inside the ≤ 40k Gate 3 budget.
+
+4. **Mega-swap spike** — one huge trade pays base on its own notional, then
+   elevates the fee for followers; the elevation window is bounded (decays
+   within the EMA window, measured ≤ 1h under probe flow) and the attacker's
+   own cost scales with trade size.
+
+**Pilot package:** invariant/enforcement map for reviewers
+([`docs/SECURITY.md`](../docs/SECURITY.md)), engagement draft
+([`SECURITY_REVIEW_REQUEST.md`](SECURITY_REVIEW_REQUEST.md)), and the frozen
+mainnet pilot design ([`PILOT_DESIGN.md`](PILOT_DESIGN.md) — ≤$250k capped
+liquidity, 90 days, pre-registered bars B1–B4, kill-switch criteria).
+
+**Remaining for full Gate 3:** independent security review (UF Security
+Fund pathway) before mainnet capital.
 
 ## 2026-08-23 — Sentinel v2: deployable signal found, calibrated, and shipped
 
